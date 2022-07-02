@@ -1,0 +1,46 @@
+╔══════╦═══╦══════════════════╦═══   ═════════════════════════════════════════════╗
+║ ∘  ∘ ║ ∘ ║                  ║
+╠══╣ ∘ ║ ∘ ║   ═══╦═══╦════   ╠═══
+║ ∘  ∘ ║ ∘ ║      ║   ║       ║
+║ ∘ ═══╣ ∘ ╚═══   ║   ║   ════╬═══
+║ ∘ ∘ ∘║ ∘  ∘     ║   ║       ║
+║ ∘ ═══╩══╗ ∘ ════╣   ║   ║   ║   ║
+║ ∘ ∘ ∘ ∘ ║ ∘ ∘ ∘ ║   ║   ║   ║   ║
+╠══════ ∘ ╚════ ∘ ║       ║   ╠═══   
+║ ∘ ∘ ∘ ∘ ∘ ∘ ∘ ∘ ║       ║   ║
+╠═════════  ∘ ╔═══╝   ╔═══╣   ║
+║ ∘   ∘  ∘  ∘ ║       ║   ║   ║
+║ ∘ ╔═════  ∘ ║   ╔═══╝   ║
+║ ∘ ║ ∘  ∘  ∘ ║   ║       ╩════════
+║ ∘ ╚══╗ ∘ ╔══╩═══╝   ║   
+║ ∘  ∘ ║ ∘ ║          ╠══════════
+╠══╣ ∘ ║ ∘ ╠══════╗   ║
+║ ∘  ∘ ║ ∘ ║      ║   ╠═══╦════
+╠══════╣ ∘ ╚╦═╗   ║   ║   ║
+║ ∘ ∘ ∘ ∘ ∘ ║║║   ║   ║   ╠══════
+║═══════╗ ∘ ║║║   ║   ║   ║
+║ ∘ ∘ ∘ ║ ∘ ║║║   ║   ║   ╠══════
+║ ∘ ║ ∘ ∘ ∘ ║║║       ║   ║
+║ ∘ ╚═══════╩═╩═══════╝   ╚═══════════════╗
+║ ∘  ∘                                    ║ 
+╠═══ ∘ ╔═══════╗   ╦   ╦   ╦═══╗   ╔═══   ║
+║ ∘  ∘ ║       ║   ║   ║   ║   ║   ║      
+║ ∘ ═══╝   ╦   ╚   ╨   ╨   ║   ╚═══╩══    ║
+║          ║               ║              ║
+╚══════════╩═══════════════╩══════════════╝
+public const string Food = "∘";
+public const string WallUpLeft = "╔";
+public const string WallUpRight = "╗";
+public const string WallDownLeft = "╚";
+public const string WallDownRight = "╝";
+public const string WallHorizontal = "═";
+public const string WallUpMiddle = "╦";
+public const string WallRightMiddle = "╠";
+public const string WallLeftMiddle = "╣";
+public const string WallDownMiddle = "╨";
+public const string WallDownMiddleThick = "╩";
+public const string WallDown = "║";
+public const string WallCross = "╬";
+public const string WallSmallMiddle = "╥";
+public const string GhostGate = "-";
+public const string Padding = "█";

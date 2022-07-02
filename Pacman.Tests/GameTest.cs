@@ -14,6 +14,9 @@ public class GameTests
             new string[] {"∘", "∘", "∘", "∘", "∘"},
 
         };
+        var height = startingGrid.Length;
+        var width = startingGrid.First().Length;
+        
         var consoleStub = new ConsoleWrapperStub(
             new List<ConsoleKey>()
             {
@@ -24,7 +27,8 @@ public class GameTests
                 ConsoleKey.Escape,
             });
         // Arrange
-        var game = new Game(startingGrid, consoleStub, new Coordinate(0 , 0));
+        var testGameState = new GameState(height, width, startingGrid, new Coordinate(0, 0));
+        var game = new Game(testGameState, consoleStub,0);
 
         var expected = new string[][]
         {
@@ -54,6 +58,9 @@ public class GameTests
             new [] {"∘", "∘", "∘", "∘", "∘"},
 
         };
+        var height = startingGrid.Length;
+        var width = startingGrid.First().Length;
+        
         var consoleStub = new ConsoleWrapperStub(
             new List<ConsoleKey>()
             {
@@ -64,7 +71,8 @@ public class GameTests
                 ConsoleKey.Escape,
             });
         // Arrange
-        var game = new Game(startingGrid, consoleStub, new Coordinate(4, 0));
+        var testGameState = new GameState(height, width, startingGrid, new Coordinate(4, 0));
+        var game = new Game(testGameState, consoleStub,0);
 
         var expected = new []
         {
@@ -94,6 +102,9 @@ public class GameTests
             new [] {"∘", "∘", "∘", "∘", "∘"},
 
         };
+        var height = startingGrid.Length;
+        var width = startingGrid.First().Length;
+        
         var consoleStub = new ConsoleWrapperStub(
             new List<ConsoleKey>()
             {
@@ -104,7 +115,8 @@ public class GameTests
                 ConsoleKey.Escape,
             });
         // Arrange
-        var game = new Game(startingGrid, consoleStub, new Coordinate(4, 0));
+        var testGameState = new GameState(height, width, startingGrid, new Coordinate(4, 0));
+        var game = new Game(testGameState, consoleStub,0);
 
         var expected = new []
         {
@@ -134,6 +146,9 @@ public class GameTests
             new [] {"⋁", "∘", "∘", "∘", "∘"},
 
         };
+        var height = startingGrid.Length;
+        var width = startingGrid.First().Length;
+        
         var consoleStub = new ConsoleWrapperStub(
             new List<ConsoleKey>()
             {
@@ -144,7 +159,8 @@ public class GameTests
                 ConsoleKey.Escape,
             });
         // Arrange
-        var game = new Game(startingGrid, consoleStub, new Coordinate(0, 4));
+        var testGameState = new GameState(height, width, startingGrid, new Coordinate(0, 4));
+        var game = new Game(testGameState, consoleStub,0);
 
         var expected = new []
         {

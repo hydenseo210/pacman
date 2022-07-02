@@ -7,4 +7,16 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Assets" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Figgle" Version="0.4.0" />
+      <PackageReference Include="System.Reactive" Version="5.0.0" />
+      <PackageReference Include="System.Windows.Extensions" Version="7.0.0-preview.5.22301.12" />
+      <PackageReference Include="TextToAsciiArt" Version="1.0.14.15" />
+      <PackageReference Include="Towel" Version="1.0.40" />
+    </ItemGroup>
+
 </Project>

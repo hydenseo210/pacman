@@ -1,14 +1,29 @@
-﻿using Pacman.Code;
+﻿namespace Pacman.Code;
 
-var console = new ConsoleWrapper();
-var startingGrid = new[]
+public static class Program
 {
-     new[] {"<", "∘", "∘", "∘", "∘"},
-     new[] {"∘", "∘", "∘", "∘", "∘"},
-     new[] {"∘", "∘", "∘", "∘", "∘"},
-     new[] {"∘", "∘", "∘", "∘", "∘"},
-     new[] {"∘", "∘", "∘", "∘", "∘"}
-};
-var game = new Game(startingGrid, console, new Coordinate(0, 0));
+    public static void Main(string[] args)
+    {
+         var currentGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/LevelOneMap.txt");
+        var testGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/test.txt");
+         //var currentGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/LevelOneMapOnlyOneFood.txt");
+         var gameStateQueue = new Queue<GameState>() { };
+         var nextGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/LevelTwoMap.txt");
+         gameStateQueue.Enqueue(nextGameState);
+         var console = new ConsoleWrapper();
+         var searchAlgorithm = new AStarSearchAlgorithm();
+         var pacmanController = new PacmanController();
+         var ghostController = new GhostController(searchAlgorithm);
+         var game = new NewGame(currentGameState, gameStateQueue, pacmanController, ghostController);
+         GameController.Run(game, console);
+        
+        
+        var algorithm = new AStarSearchAlgorithm();
+        var list = algorithm.Execute(currentGameState);
+        foreach (var coord in list)
+        {
+            Console.WriteLine($"{coord.X+1}, {coord.Y+1}");
+        }
 
-game.Run();
+    }
+}
