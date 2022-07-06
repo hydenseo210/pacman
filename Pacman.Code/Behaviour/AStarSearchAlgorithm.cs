@@ -5,14 +5,15 @@ public class AStarSearchAlgorithm
     private static int Width { get; set; }
     private static int Height { get; set; }
 
-    public List<Coordinate> Execute(GameState gameState)
+    public List<Coordinate> Execute(GameState gameState, Coordinate ghostLocation)
     {
         Width = gameState.Width;
         Height = gameState.Height;
+        
         var start = new Tile
         {
-            Y = gameState.GhostLocation.Y,
-            X = gameState.GhostLocation.X
+            Y = ghostLocation.Y,
+            X = ghostLocation.X
         };
 
         var finish = new Tile
@@ -68,6 +69,7 @@ public class AStarSearchAlgorithm
                 }
             }
         }
+        shortestPath.Add(ghostLocation);
         return shortestPath;
     }
     

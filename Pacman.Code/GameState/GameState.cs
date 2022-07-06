@@ -9,5 +9,6 @@ public record GameState(
 {
 
     public Coordinate PacmanLocation { get; set; } = default!;
-    public Coordinate GhostLocation { get; set; } = default!;
+    public Coordinate BlinkyLocation { get; set; } = default!;
+    public Coordinate PinkyLocation { get; set; } = default!;
 }

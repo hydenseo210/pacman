@@ -9,7 +9,8 @@ public class GameDownload
         var height = fileData.Length;
         var width = fileData.First().Length;
         var pacmanLocation = new Coordinate(0, 0);
-        var ghostLocation = new Coordinate(0, 0);
+        var blinkyLocation = new Coordinate(0, 0);
+        var pinkyLocation = new Coordinate(0, 0);
         var totalScore = 0;
         var ghostGateLocation = new List<Coordinate>() { };
         IDictionary<Coordinate, Cell> mapData = new Dictionary<Coordinate, Cell>() { };
@@ -27,9 +28,13 @@ public class GameDownload
                         mapData.Add(coordinate, new ThePacman());
                         pacmanLocation = coordinate;
                         break;
-                    case Emojis.Ghost:
-                        mapData.Add(coordinate, new Ghost(new ChaseAggressive()));
-                        ghostLocation = coordinate;
+                    case Emojis.Blinky:
+                        mapData.Add(coordinate, new Blinky(new ChaseAggressive()));
+                        blinkyLocation = coordinate;
+                        break;
+                    case Emojis.Pinky:
+                        mapData.Add(coordinate, new Pinky(new ChaseAggressive()));
+                        pinkyLocation = coordinate;
                         break;
                     case Emojis.EmptyString:
                         mapData.Add(coordinate, new EmptyCell());
@@ -92,6 +97,10 @@ public class GameDownload
             }
         }
         
-        return new GameState(height, width, mapData , ghostGateLocation, totalScore) { PacmanLocation = pacmanLocation, GhostLocation = ghostLocation};
+        return new GameState(height, width, mapData , ghostGateLocation, totalScore) 
+            { PacmanLocation = pacmanLocation, 
+                BlinkyLocation = blinkyLocation,
+                PinkyLocation = pinkyLocation
+            };
     }
 }

@@ -2,21 +2,33 @@ namespace Pacman.Code;
 
 public class GhostController
 {
-    private readonly AStarSearchAlgorithm _searchAlgorithm;
-    private Cell? _trail;
-    
-    public GhostController(AStarSearchAlgorithm searchAlgorithm)
+    public Cell BlinkyTrail { get; set; } = new EmptyCell();
+    public Cell PinkyTrail { get; set; } = new EmptyCell();
+    private Blinky _blinky;
+    private Pinky _pinky;
+
+    public GhostController(Blinky blinky, Pinky pinky)
     {
-        _searchAlgorithm = searchAlgorithm;
+        _blinky = blinky;
+        _pinky = pinky;
     }
 
-    public List<Coordinate> Move(GameState gameState) => 
-        _searchAlgorithm.Execute(gameState);
-
-    public Cell GhostTrail(GameState gameState, Coordinate coordinate)
+    public Coordinate MoveBlinky(GameState gameState)
     {
-        _trail = gameState.Map[coordinate];
-        return _trail;
+        _blinky.CreateMoveList(gameState);
+        _blinky.RemoveLast();
+        var nextMove = _blinky.Move();
+        BlinkyTrail = gameState.Map[nextMove];
+        return nextMove;
     }
     
+    public Coordinate MovePinky(GameState gameState)
+    {
+        _pinky.CreateMoveList(gameState);
+        _pinky.RemoveLast();
+        var nextMove = _pinky.Move();
+        PinkyTrail = gameState.Map[nextMove];
+        return nextMove;
+    }
+
 }

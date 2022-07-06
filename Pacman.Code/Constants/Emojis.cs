@@ -10,7 +10,8 @@ public class Emojis
     public const string PacmanDown = "⋀";
     public const string Food = "∘";
     public const string SpecialFood = "+";
-    public const string Ghost = "@";
+    public const string Pinky = "@";
+    public const string Blinky = "#";
     public static readonly List<string> EatingRightMotion = new List<string> { "⩹", "<", "⦣", "<"};
     public static readonly List<string> EatingLeftMotion = new List<string> { "⩺", ">", "⦢", ">"};
     public static readonly List<string> EatingUpMotion = new List<string> { "⩒", "⋁", "⩗", "⋁"};

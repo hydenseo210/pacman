@@ -2,8 +2,9 @@ namespace Pacman.Code;
 
 public class ChaseAggressive : IChaseBehaviour
 {
-    public Coordinate Chase(Coordinate ghostLocation, Coordinate pacmanLocation)
+    public List<Coordinate> Chase(GameState gameState, Coordinate ghostLocation)
     {
-        throw new NotImplementedException();
+        var algorithm = new AStarSearchAlgorithm();
+        return algorithm.Execute(gameState, ghostLocation);
     }
 }

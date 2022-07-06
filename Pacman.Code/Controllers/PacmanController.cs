@@ -13,15 +13,22 @@ namespace Pacman.Code
             
             var currentDirection = pacman.State.Direction;
             
-            if (pacman.State.Direction == direction)
+            if (currentDirection == direction)
             {
                 var destination = pacman.MoveForward(departure);
                 return destination;
             }
+            
             pacman.ChangeDirection(direction);
             var tempCoordinate = pacman.MoveForward(departure);
-            if(map[tempCoordinate] is Wall) pacman.ChangeDirection(currentDirection);
-            
+            if(map[tempCoordinate] is Wall)
+            { 
+                pacman.ChangeDirection(currentDirection);
+            }
+            else
+            {
+                return tempCoordinate;
+            }
             return departure;
         }
 
