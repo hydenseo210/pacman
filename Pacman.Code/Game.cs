@@ -6,7 +6,7 @@ namespace Pacman.Code
     {
         private  GameState _gameState;
         private readonly Queue<GameState> _nextState;
-        private  IDictionary<Coordinate,Cell> _map;
+        private  Dictionary<Coordinate,Cell> _map;
         private readonly PacmanController _pacmanController;
         private readonly GhostController _ghostController;
         private readonly GameStatus _status = new();
@@ -58,32 +58,7 @@ namespace Pacman.Code
         
         public void MovePacman(Directions direction)
         {
-            if (_status.isWon)
-            {
-                LevelOneCompleteMessage();
-                UpdateGameState();
-                _status.isWon = false;
-                return;
-            }
-            if (CheckCollision(_gameState.PacmanLocation, _gameState.BlinkyLocation)
-                || CheckCollision(_gameState.PacmanLocation, _gameState.PinkyLocation))
-            {
-                ResetPosition();
-                return;
-            }
-            var departurePacman = _gameState.PacmanLocation;
-            var destinationPacman = _pacmanController.Move(_map, direction, departurePacman);
-            
-            Print();
-            if (UpdateGameStatus(destinationPacman))
-            {
-                return;
-            }
-
-            _map[destinationPacman] = _map[departurePacman];
-            _map[departurePacman] = new EmptyCell();
-            _gameState.PacmanLocation = destinationPacman;
-            
+            _pacmanController.Move(_gameState, direction);
             Print();
         }
         public void MoveBlinky()
@@ -128,27 +103,6 @@ namespace Pacman.Code
         private void UpdateGameState() {
             _gameState = _nextState.Dequeue();
             _map = _gameState.Map;
-        }
-        private bool UpdateGameStatus(Coordinate destination)
-        {
-            switch (_map[destination])
-            {
-                case Wall:
-                    return true;
-                case Food:
-                    _status.Scores += Food.Score;
-                    if (IsWon())
-                    {
-                        _status.isWon = true;
-                        return true;
-                    }
-
-                    break;
-                case ThePacman:
-                    return true;
-            }
-
-            return false;
         }
 
         private bool IsWon() => _status.Scores == _gameState.TotalScore && !_status.isLost;

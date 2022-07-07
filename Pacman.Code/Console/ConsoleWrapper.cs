@@ -16,4 +16,5 @@ public class ConsoleWrapper : IConsoleWrapper
     {
         return Console.ReadLine();
     }
+    public bool KeyAvailable => Console.KeyAvailable;
 }

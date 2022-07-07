@@ -3,7 +3,7 @@ namespace Pacman.Code;
 public record GameState(
     int Height,
     int Width,
-    IDictionary<Coordinate, Cell> Map,
+    Dictionary<Coordinate, Cell> Map,
     List<Coordinate> GhostGateLocation,
     int TotalScore)
 {

@@ -8,27 +8,32 @@ public class GameTests
     public void Pacman_Can_Move_In_The_Direction_Right_Across_The_Screen_When_RightArrow_Is_Pressed()
     {
         var stubGameState = StubGameState.GetGameState(Directions.Right);
-        var gameStateQueue = new Queue<GameState>() { };
-        var consoleStub = new ConsoleWrapperStub(
-            new List<ConsoleKey>()
-            {
-                ConsoleKey.RightArrow,
-                ConsoleKey.RightArrow,
-                ConsoleKey.RightArrow,
-                ConsoleKey.RightArrow,
-                ConsoleKey.Q,
-            });
         // Arrange
-        var game = new Game(StubGameState.GetGameState(Directions.Right), 
-            gameStateQueue, new PacmanController(), new GhostController(new Blinky(new ChaseAggressive()), new Pinky(new ChaseAggressive())), consoleStub);
         var expectedGameState = ExpectedGameState.GetGameState(Directions.Right);
+        var controller = new PacmanController();
         // Act 
-        GameController.Run(game, consoleStub);
+        controller.Move(stubGameState, Directions.Right);
         var actualMap = stubGameState.Map;
+        var expectedMap = expectedGameState.Map;
         // Assert
-        Assert.Equal(expectedGameState, stubGameState);
+        Assert.True(Compare(expectedMap, actualMap));
+    }
+
+    private bool Compare(Dictionary<Coordinate, Cell> x, Dictionary<Coordinate, Cell> y)
+    {
+        if (x.Count != y.Count)
+            return false;
+        if (x.Keys.Except(y.Keys).Any())
+            return false;
+        if (y.Keys.Except(x.Keys).Any())
+            return false;
+        foreach (var pair in x)
+            if(x[pair.Key].GetType() != y[pair.Key].GetType())
+                return false;
+        return true;
     }
 //     
+        
 //     [Fact]
 //     public void Pacman_Can_Move_In_The_Direction_Left_Across_The_Screen_When_LeftArrow_Is_Pressed()
 //     {
@@ -163,7 +168,7 @@ public class GameTests
 // }
 
 
-    public class ConsoleWrapperStub : IConsoleWrapper
+private class ConsoleWrapperStub : IConsoleWrapper
     {
         private IList<ConsoleKey> keyCollection;
         private int keyIndex = 0;
@@ -191,5 +196,8 @@ public class GameTests
         {
             return Console.ReadLine();
         }
+
+        public bool KeyAvailable => true;
     }
+
 }

@@ -13,7 +13,7 @@ public class GameDownload
         var pinkyLocation = new Coordinate(0, 0);
         var totalScore = 0;
         var ghostGateLocation = new List<Coordinate>() { };
-        IDictionary<Coordinate, Cell> mapData = new Dictionary<Coordinate, Cell>() { };
+        Dictionary<Coordinate, Cell> mapData = new Dictionary<Coordinate, Cell>() { };
         
         for (var x = 0; x < height; x++)
         {

@@ -10,10 +10,10 @@ public class ExpectedGameState
         var stubMap = new Dictionary<Coordinate, Cell>()
         {
             [new Coordinate(0, 0)] = new EmptyCell(),
-            [new Coordinate(0, 1)] = new EmptyCell(),
-            [new Coordinate(0, 2)] = new EmptyCell(),
-            [new Coordinate(0, 3)] = new EmptyCell(),
-            [new Coordinate(0, 4)] = new ThePacman(directions),
+            [new Coordinate(0, 1)] = new ThePacman(directions),
+            [new Coordinate(0, 2)] = new Food(),
+            [new Coordinate(0, 3)] = new Food(),
+            [new Coordinate(0, 4)] = new Food(),
 
             [new Coordinate(1, 0)] = new Food(),
             [new Coordinate(1, 1)] = new Food(),
@@ -37,8 +37,11 @@ public class ExpectedGameState
             [new Coordinate(4, 1)] = new Food(),
             [new Coordinate(4, 2)] = new Food(),
             [new Coordinate(4, 3)] = new Food(),
-            [new Coordinate(4, 4)] = new Food(),
+            [new Coordinate(4, 4)] = new Food()
         };
-        return new GameState(stubHeight, stubWidth, stubMap, new List<Coordinate>() { }, stubTotalScore);
+        return new GameState(stubHeight, stubWidth, stubMap, new List<Coordinate>() { }, stubTotalScore)
+        {
+            PacmanLocation = new Coordinate(0,1)
+        };
     }
 }

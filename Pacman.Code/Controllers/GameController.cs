@@ -9,7 +9,7 @@ namespace Pacman.Code
             var direction = Directions.Right;
             do
             {
-                if (Console.KeyAvailable)
+                if (console.KeyAvailable)
                 {
                     key = console.ReadKey().Key;
                     direction = GetDirectionByKey(key);

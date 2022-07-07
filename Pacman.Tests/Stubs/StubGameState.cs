@@ -37,9 +37,12 @@ public static class StubGameState
             [new Coordinate(4, 1)] = new Food(),
             [new Coordinate(4, 2)] = new Food(),
             [new Coordinate(4, 3)] = new Food(),
-            [new Coordinate(4, 4)] = new Food(),
+            [new Coordinate(4, 4)] = new Food()
         };
-        return new GameState(stubHeight, stubWidth, stubMap, new List<Coordinate>() { }, stubTotalScore);
+        return new GameState(stubHeight, stubWidth, stubMap, new List<Coordinate>() { }, stubTotalScore)
+        {
+            PacmanLocation = new Coordinate(0,0)
+        };
     }
 }
 

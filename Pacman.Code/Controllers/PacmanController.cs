@@ -2,13 +2,12 @@ namespace Pacman.Code
 {
     public class PacmanController
     {
-        public Coordinate Move(
-            IDictionary<Coordinate, Cell> map,
-            Directions direction,
-            Coordinate departure)
+        public void Move(
+            GameState gameState,
+            Directions direction)
         {
-            
-            if (map[departure] is not ThePacman pacman)
+            var departure = gameState.PacmanLocation;
+            if (gameState.Map[departure] is not ThePacman pacman)
                 throw new InvalidOperationException("No Pacman found");
             
             var currentDirection = pacman.State.Direction;
@@ -16,23 +15,26 @@ namespace Pacman.Code
             if (currentDirection == direction)
             {
                 var destination = pacman.MoveForward(departure);
-                return destination;
+                if (gameState.Map[destination] is Wall) return;
+                UpdateLocation(gameState, destination, departure);
+                return;
             }
             
             pacman.ChangeDirection(direction);
             var tempCoordinate = pacman.MoveForward(departure);
-            if(map[tempCoordinate] is Wall)
+            if(gameState.Map[tempCoordinate] is Wall)
             { 
                 pacman.ChangeDirection(currentDirection);
+                return;
             }
-            else
-            {
-                return tempCoordinate;
-            }
-            return departure;
+            UpdateLocation(gameState, tempCoordinate, departure);
         }
 
-        public Coordinate LocatePacman(IDictionary<Coordinate, Cell> map) =>
-            map.Single(c => c.Value is ThePacman).Key;
+        private void UpdateLocation(GameState gameState, Coordinate destination, Coordinate departure)
+        {
+            gameState.Map[destination] = gameState.Map[departure];
+            gameState.Map[departure] = new EmptyCell();
+            gameState.PacmanLocation = destination;
+        }
     }
 }
