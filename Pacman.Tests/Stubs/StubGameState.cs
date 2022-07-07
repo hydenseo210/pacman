@@ -42,3 +42,12 @@ public static class StubGameState
         return new GameState(stubHeight, stubWidth, stubMap, new List<Coordinate>() { }, stubTotalScore);
     }
 }
+
+//         {
+//             new [] {"∘", "∘", "∘", "∘", ">"},
+//             new [] {"∘", "∘", "∘", "∘", "∘"},
+//             new [] {"∘", "∘", "∘", "∘", "∘"},
+//             new [] {"∘", "∘", "∘", "∘", "∘"},
+//             new [] {"∘", "∘", "∘", "∘", "∘"},
+//
+//         };

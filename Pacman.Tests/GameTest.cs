@@ -20,7 +20,7 @@ public class GameTests
             });
         // Arrange
         var game = new Game(StubGameState.GetGameState(Directions.Right), 
-            gameStateQueue, new PacmanController(), new GhostController(new AStarSearchAlgorithm()), consoleStub);
+            gameStateQueue, new PacmanController(), new GhostController(new Blinky(new ChaseAggressive()), new Pinky(new ChaseAggressive())), consoleStub);
         var expectedGameState = ExpectedGameState.GetGameState(Directions.Right);
         // Act 
         GameController.Run(game, consoleStub);
@@ -34,7 +34,7 @@ public class GameTests
 //     {
 //         var startingGrid = new[]
 //         {
-//             new [] {"∘", "∘", "∘", "∘", ">"},
+//             new [] {"<", "∘", "∘", "∘", "<"},
 //             new [] {"∘", "∘", "∘", "∘", "∘"},
 //             new [] {"∘", "∘", "∘", "∘", "∘"},
 //             new [] {"∘", "∘", "∘", "∘", "∘"},

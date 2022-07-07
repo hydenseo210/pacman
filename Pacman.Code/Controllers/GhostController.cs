@@ -18,7 +18,8 @@ public class GhostController
         _blinky.CreateMoveList(gameState);
         _blinky.RemoveLast();
         var nextMove = _blinky.Move();
-        BlinkyTrail = gameState.Map[nextMove];
+        if (gameState.Map[nextMove] is ThePacman or Blinky) BlinkyTrail = new EmptyCell();
+        else BlinkyTrail = gameState.Map[nextMove];
         return nextMove;
     }
     
@@ -27,8 +28,14 @@ public class GhostController
         _pinky.CreateMoveList(gameState);
         _pinky.RemoveLast();
         var nextMove = _pinky.Move();
-        PinkyTrail = gameState.Map[nextMove];
+        if (gameState.Map[nextMove] is ThePacman or Pinky) PinkyTrail = new EmptyCell();
+        else PinkyTrail = gameState.Map[nextMove];
         return nextMove;
     }
 
+    public void Reset(GameState gameState)
+    {
+        _blinky.CreateMoveList(gameState);
+        _pinky.CreateMoveList(gameState);
+    }
 }

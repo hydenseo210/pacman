@@ -55,6 +55,7 @@ namespace Pacman.Code
         }
 
         private void DashBoard() => _console.Write(Messages.DashBoardMessage(_status.Scores, _gameState.TotalScore));
+        
         public void MovePacman(Directions direction)
         {
             if (_status.isWon)
@@ -68,6 +69,7 @@ namespace Pacman.Code
                 || CheckCollision(_gameState.PacmanLocation, _gameState.PinkyLocation))
             {
                 ResetPosition();
+                return;
             }
             var departurePacman = _gameState.PacmanLocation;
             var destinationPacman = _pacmanController.Move(_map, direction, departurePacman);
@@ -109,16 +111,16 @@ namespace Pacman.Code
             _gameState.PacmanLocation = _pacmanStartingLocation;
             _gameState.Map[_pacmanStartingLocation] = new ThePacman();
 
-            _gameState.Map[_BlinkyStartingLocation] = _ghostController.BlinkyTrail;
+            _gameState.Map[_gameState.BlinkyLocation] = _ghostController.BlinkyTrail;
             _gameState.BlinkyLocation = _BlinkyStartingLocation;
             _gameState.Map[_BlinkyStartingLocation] = new Blinky(new ChaseAggressive());
-            _ghostController.BlinkyTrail = new EmptyCell();
-            
-            _gameState.Map[_PinkyStartingLocation] = _ghostController.PinkyTrail;
+
+            _gameState.Map[_gameState.PinkyLocation] = _ghostController.PinkyTrail;
             _gameState.PinkyLocation = _PinkyStartingLocation;
-            _gameState.Map[_BlinkyStartingLocation] = new Pinky(new ChaseAggressive());
-            _ghostController.PinkyTrail = new EmptyCell();
-            
+            _gameState.Map[_PinkyStartingLocation] = new Pinky(new ChaseAggressive());
+
+            _ghostController.Reset(_gameState);
+
             _console.Write(Messages.LifeLostMessage);
             Thread.Sleep(2000);
         }
