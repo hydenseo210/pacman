@@ -7,14 +7,21 @@ public class GameTests
     [Fact]
     public void Pacman_Can_Move_In_The_Direction_Right_Across_The_Screen_When_RightArrow_Is_Pressed()
     {
-        var stubGameState = StubGameState.GetGameState(Directions.Right);
+        var mapHelper = new TestMapHelper();
+        //var stubGameState = StubGameState.GetGameState(Directions.Right);
         // Arrange
+        var mappyBoy = mapHelper.SetUpInitialMap();
+        mapHelper.SetPacmanPosition(new Coordinate(0,0), Directions.Right, mappyBoy);
+        var actualMap = mappyBoy;
+        var state = new GameState(5, 5, actualMap);
         var expectedGameState = ExpectedGameState.GetGameState(Directions.Right);
         var controller = new PacmanController();
-        // Act 
-        controller.Move(stubGameState, Directions.Right);
-        var actualMap = stubGameState.Map;
+
         var expectedMap = expectedGameState.Map;
+        
+        // Act 
+        controller.Move(state, Directions.Right);
+
         // Assert
         Assert.True(Compare(expectedMap, actualMap));
     }
