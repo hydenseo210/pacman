@@ -13,29 +13,59 @@ public class GhostController
         _pinky = pinky;
     }
 
-    public Coordinate MoveBlinky(GameState gameState)
+    public void MoveBlinky(GameState gameState)
     {
         _blinky.CreateMoveList(gameState);
         _blinky.RemoveLast();
-        var nextMove = _blinky.Move();
-        if (gameState.Map[nextMove] is ThePacman or Blinky) BlinkyTrail = new EmptyCell();
-        else BlinkyTrail = gameState.Map[nextMove];
-        return nextMove;
+        var departure = gameState.BlinkyLocation;
+        var destination = _blinky.Move();
+        
+        
+        if(gameState.Map[destination] is ThePacman)
+        {
+            gameState.IsCollisionWithGhost = true;
+            BlinkyTrail = new EmptyCell();
+            PinkyTrail = new EmptyCell();
+            return;
+        }
+
+        var previousTrail = BlinkyTrail;
+        BlinkyTrail = gameState.Map[destination];
+        gameState.Map[destination] = gameState.Map[departure];
+        gameState.Map[departure] = previousTrail;
+        gameState.BlinkyLocation = destination;
     }
     
-    public Coordinate MovePinky(GameState gameState)
+    public void MovePinky(GameState gameState)
     {
         _pinky.CreateMoveList(gameState);
         _pinky.RemoveLast();
-        var nextMove = _pinky.Move();
-        if (gameState.Map[nextMove] is ThePacman or Pinky) PinkyTrail = new EmptyCell();
-        else PinkyTrail = gameState.Map[nextMove];
-        return nextMove;
+        var departure = gameState.PinkyLocation;
+        var destination = _pinky.Move();
+
+        if(gameState.Map[destination] is ThePacman)
+        {
+            gameState.IsCollisionWithGhost = true;
+            BlinkyTrail = new EmptyCell();
+            PinkyTrail = new EmptyCell();
+            return;
+        }
+        var previousTrail = PinkyTrail;
+        PinkyTrail = gameState.Map[destination];
+        gameState.Map[destination] = gameState.Map[departure];
+        gameState.Map[departure] = previousTrail;
+        gameState.PinkyLocation = destination;
     }
 
     public void Reset(GameState gameState)
     {
         _blinky.CreateMoveList(gameState);
         _pinky.CreateMoveList(gameState);
+    }
+
+    public void ChangeGhostsToFrightened()
+    {
+        _blinky.ChangeBehaviour(new FrightenedBehaviour());
+        _pinky.ChangeBehaviour(new FrightenedBehaviour());
     }
 }

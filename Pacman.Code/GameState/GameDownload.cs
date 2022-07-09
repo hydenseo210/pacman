@@ -24,16 +24,16 @@ public class GameDownload
                 var currentString = fileData[x][y].ToString();
                 switch (currentString)
                 {
-                    case Emojis.PacmanRight:
+                    case var value when value == Emojis.PacmanRight:
                         mapData.Add(coordinate, new ThePacman());
                         pacmanLocation = coordinate;
                         break;
-                    case Emojis.Blinky:
-                        mapData.Add(coordinate, new Blinky(new ChaseAggressive()));
+                    case var value when value == Emojis.Blinky:
+                        mapData.Add(coordinate, new Blinky(new AggressiveBehaviour()));
                         blinkyLocation = coordinate;
                         break;
-                    case Emojis.Pinky:
-                        mapData.Add(coordinate, new Pinky(new ChaseAggressive()));
+                    case var value when value == Emojis.Pinky:
+                        mapData.Add(coordinate, new Pinky(new AggressiveBehaviour()));
                         pinkyLocation = coordinate;
                         break;
                     case Emojis.EmptyString:
@@ -76,8 +76,8 @@ public class GameDownload
                     case Emojis.WallDownMiddleThick:
                         mapData.Add(coordinate, new WallDownMiddleThick());
                         break;
-                    case Emojis.WallDown:
-                        mapData.Add(coordinate, new WallDown());
+                    case Emojis.WallVertical:
+                        mapData.Add(coordinate, new WallVertical());
                         break;
                     case Emojis.WallSmallMiddle:
                         mapData.Add(coordinate, new WallSmallMiddle());

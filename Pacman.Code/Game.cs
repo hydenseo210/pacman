@@ -1,3 +1,4 @@
+using System.Text;
 using Figgle;
 
 namespace Pacman.Code
@@ -11,10 +12,9 @@ namespace Pacman.Code
         private readonly GhostController _ghostController;
         private readonly GameStatus _status = new();
         private readonly IConsoleWrapper _console;
-        private readonly int _ghostCount;
         private readonly Coordinate _pacmanStartingLocation;
-        private readonly Coordinate _BlinkyStartingLocation;
-        private readonly Coordinate _PinkyStartingLocation;
+        private readonly Coordinate _blinkyStartingLocation;
+        private readonly Coordinate _pinkyStartingLocation;
 
         public Game(GameState gameState, Queue<GameState> nextStates, PacmanController pacmanController, GhostController ghostController, IConsoleWrapper console)
         {
@@ -25,14 +25,10 @@ namespace Pacman.Code
             _pacmanController = pacmanController;
             _ghostController = ghostController;
             _pacmanStartingLocation = gameState.PacmanLocation;
-            _BlinkyStartingLocation = gameState.BlinkyLocation;
-            _PinkyStartingLocation = gameState.PinkyLocation;
+            _blinkyStartingLocation = gameState.BlinkyLocation;
+            _pinkyStartingLocation = gameState.PinkyLocation;
 
         }
-        
-        private bool CheckCollision(Coordinate ghostNextMove, Coordinate pacmanLocation) =>
-            ghostNextMove == pacmanLocation;
-
         private void OpenGhostCage()
         {
             foreach (var ghostGate in _gameState.GhostGateLocation)
@@ -54,30 +50,48 @@ namespace Pacman.Code
             Print();
         }
 
-        private void DashBoard() => _console.Write(Messages.DashBoardMessage(_status.Scores, _gameState.TotalScore));
-        
+        private void DashBoard() => _console.Write(Messages.DashBoardMessage(_gameState.CurrentScore, _gameState.TotalScore, _gameState.LivesList));
+        private void PacmanMessage() => _console.Write(Messages.Pacman);
         public void MovePacman(Directions direction)
         {
             _pacmanController.Move(_gameState, direction);
             Print();
+            if (_gameState.IsCollisionWithGhost)
+            {
+                _gameState.LivesList = _gameState.LivesList.GetRange(0, _gameState.LivesList.Count - 1);
+                ResetPosition();
+                _gameState.IsCollisionWithGhost = false;
+            }
+            if (_gameState.GodMode)
+            {
+                _ghostController.ChangeGhostsToFrightened();
+                _gameState.GodMode = false;
+            }
+            
         }
+
         public void MoveBlinky()
         {
-            var departureBlinky = _gameState.BlinkyLocation;
-            var destinationBlinky = _ghostController.MoveBlinky(_gameState);
-            _map[destinationBlinky] = _map[departureBlinky];
-            _map[departureBlinky] = _ghostController.BlinkyTrail;
-            _gameState.BlinkyLocation = destinationBlinky;
-
+            _ghostController.MoveBlinky(_gameState);
+            Print();
+            if (_gameState.IsCollisionWithGhost)
+            {
+                _gameState.LivesList = _gameState.LivesList.GetRange(0, _gameState.LivesList.Count - 1);
+                ResetPosition();
+                _gameState.IsCollisionWithGhost = false;
+            }
         }
+
         public void MovePinky()
         {
-            var departurePinky = _gameState.PinkyLocation;
-            var destinationPinky = _ghostController.MovePinky(_gameState);
-            _map[destinationPinky] = _map[departurePinky];
-            _map[departurePinky] = _ghostController.PinkyTrail;
-            _gameState.PinkyLocation = destinationPinky;
-
+            _ghostController.MovePinky(_gameState);
+            Print();
+            if (_gameState.IsCollisionWithGhost)
+            {
+                _gameState.LivesList = _gameState.LivesList.GetRange(0, _gameState.LivesList.Count - 1);
+                ResetPosition();
+                _gameState.IsCollisionWithGhost = false;
+            }
         }
 
         private void ResetPosition()
@@ -87,12 +101,12 @@ namespace Pacman.Code
             _gameState.Map[_pacmanStartingLocation] = new ThePacman();
 
             _gameState.Map[_gameState.BlinkyLocation] = _ghostController.BlinkyTrail;
-            _gameState.BlinkyLocation = _BlinkyStartingLocation;
-            _gameState.Map[_BlinkyStartingLocation] = new Blinky(new ChaseAggressive());
+            _gameState.BlinkyLocation = _blinkyStartingLocation;
+            _gameState.Map[_blinkyStartingLocation] = new Blinky(new AggressiveBehaviour());
 
             _gameState.Map[_gameState.PinkyLocation] = _ghostController.PinkyTrail;
-            _gameState.PinkyLocation = _PinkyStartingLocation;
-            _gameState.Map[_PinkyStartingLocation] = new Pinky(new ChaseAggressive());
+            _gameState.PinkyLocation = _pinkyStartingLocation;
+            _gameState.Map[_pinkyStartingLocation] = new Pinky(new AggressiveBehaviour());
 
             _ghostController.Reset(_gameState);
 
@@ -113,7 +127,8 @@ namespace Pacman.Code
             Thread.Sleep(2000);
         }
         private void Print()
-         {
+        {
+            PacmanMessage();
              for (var x = 0; x < _gameState.Height; x++)
              {
                  var row = "";
@@ -126,7 +141,6 @@ namespace Pacman.Code
                  _console.Write(row);
                  _console.Write("\n");
              }
-             _console.Write("\n");
              DashBoard();
              _console.Write("\n");
          }

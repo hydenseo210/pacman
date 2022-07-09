@@ -14,7 +14,7 @@ public static class Program
          var searchAlgorithm = new AStarSearchAlgorithm();
          var pacmanController = new PacmanController();
          // var ghostController = new GhostController(searchAlgorithm);
-         var ghostController = new GhostController(new Blinky(new ChaseAggressive()), new Pinky(new ChaseAggressive()));
+         var ghostController = new GhostController(new Blinky(new AggressiveBehaviour()), new Pinky(new AggressiveBehaviour()));
          var game = new Game(currentGameState, gameStateQueue, pacmanController, ghostController,console);
          GameController.Run(game, console);
 

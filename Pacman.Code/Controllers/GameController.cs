@@ -24,6 +24,7 @@ namespace Pacman.Code
                     game.MovePinky();
                 }
                 Thread.Sleep(200);
+                Console.Clear();
             } while (key != ConsoleKey.Q);
         }
 

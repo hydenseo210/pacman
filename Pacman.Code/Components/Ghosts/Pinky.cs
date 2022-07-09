@@ -1,3 +1,6 @@
+using System.Drawing;
+using Pastel;
+
 namespace Pacman.Code
 
 {
@@ -11,8 +14,8 @@ namespace Pacman.Code
             _chaseBehaviour = chaseBehaviour;
         }
         public override bool IsValidPath() => false;
-        public override string Print() => "@";
-        
+        public override string Print() => _chaseBehaviour is AggressiveBehaviour ? 
+            Emojis.Pinky.Pastel(Color.FromArgb(235, 95, 230)) : Emojis.Pinky.Pastel(Color.FromArgb(148,0,211));
         public void CreateMoveList(GameState gameState) =>
             _moveList = _chaseBehaviour.Chase(gameState, gameState.PinkyLocation);
 

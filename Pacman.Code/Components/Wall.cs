@@ -1,3 +1,6 @@
+using System.Drawing;
+using Pastel;
+
 namespace Pacman.Code
 {
     public abstract class Wall: Cell
@@ -37,7 +40,7 @@ namespace Pacman.Code
         public override bool IsValidPath() => false;
         public override string Print() => Emojis.WallUpMiddle;
     }
-    
+    //Pastel(Color.FromArgb(0, 102, 204))
     public class WallRightMiddle: Wall
     {
         public override bool IsValidPath() => false;
@@ -61,10 +64,10 @@ namespace Pacman.Code
         public override string Print() => Emojis.WallDownMiddle;
     }
     
-    public class WallDown: Wall
+    public class WallVertical: Wall
     {
         public override bool IsValidPath() => false;
-        public override string Print() => Emojis.WallDown;
+        public override string Print() => Emojis.WallVertical;
     }
     
     public class WallSmallMiddle: Wall
