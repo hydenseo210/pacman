@@ -5,14 +5,15 @@ public class AStarSearchAlgorithm
     private static int Width { get; set; }
     private static int Height { get; set; }
 
-    public List<Coordinate> Execute(GameState gameState)
+    public List<Coordinate> Execute(GameState gameState, Coordinate ghostLocation, IChaseBehaviour behaviour)
     {
         Width = gameState.Width;
         Height = gameState.Height;
+        
         var start = new Tile
         {
-            Y = gameState.GhostLocation.Y,
-            X = gameState.GhostLocation.X
+            Y = ghostLocation.Y,
+            X = ghostLocation.X
         };
 
         var finish = new Tile
@@ -29,7 +30,9 @@ public class AStarSearchAlgorithm
 
         while (activeTiles.Any())
         {
-            var checkTile = activeTiles.OrderBy(x => x.CostDistance).First();
+            Tile checkTile = null;
+            if (behaviour is AggressiveBehaviour) checkTile = activeTiles.OrderBy(x => x.CostDistance).First();
+            if (behaviour is FrightenedBehaviour) checkTile = activeTiles.OrderBy(x => x.CostDistance).Last();
             if (checkTile.X == finish.X && checkTile.Y == finish.Y)
             {
                 var tile = checkTile;
@@ -49,18 +52,27 @@ public class AStarSearchAlgorithm
             var walkableTiles = GetWalkableTiles(gameState.Map, checkTile, finish);
             foreach (var walkableTile in walkableTiles)
             {
-                //if we have already visited this tile then we don't need to do so again
                 if (visitedTiles.Any(x => x.X == walkableTile.X && x.Y == walkableTile.Y)) continue;
-                //if it's already in the active list, but if its cheaper replace it 
                 if (activeTiles.Any(x => x.X == walkableTile.X && x.Y == walkableTile.Y))
                 {
                     var existingTile = activeTiles.First(x => x.X == walkableTile.X && x.Y == walkableTile.Y);
-                    if (existingTile.CostDistance > checkTile.CostDistance)
+                    if (behaviour is AggressiveBehaviour)
                     {
-                        activeTiles.Remove(existingTile);
-                        activeTiles.Add(walkableTile);
+                        if (existingTile.CostDistance > checkTile.CostDistance) // this part
+                        {
+                            activeTiles.Remove(existingTile);
+                            activeTiles.Add(walkableTile);
+                        }
                     }
 
+                    if (behaviour is FrightenedBehaviour)
+                    {
+                        if (existingTile.CostDistance < checkTile.CostDistance) // this part
+                        {
+                            activeTiles.Remove(existingTile);
+                            activeTiles.Add(walkableTile);
+                        }
+                    }
                 }
                 else
                 {
@@ -68,6 +80,7 @@ public class AStarSearchAlgorithm
                 }
             }
         }
+        shortestPath.Add(ghostLocation);
         return shortestPath;
     }
     

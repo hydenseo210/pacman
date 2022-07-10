@@ -1,31 +1,70 @@
+using System.Reflection.PortableExecutable;
+
 namespace Pacman.Code
 {
     public class PacmanController
     {
-        public Coordinate Move(
-            IDictionary<Coordinate, Cell> map,
-            Directions direction,
-            Coordinate departure)
+        public void Move(
+            GameState gameState,
+            Directions direction)
         {
-            
-            if (map[departure] is not ThePacman pacman)
+            var departure = gameState.PacmanLocation;
+            if (gameState.Map[departure] is not ThePacman pacman)
                 throw new InvalidOperationException("No Pacman found");
-            
+            pacman.State.Eating = false;   
             var currentDirection = pacman.State.Direction;
             
-            if (pacman.State.Direction == direction)
+            if (currentDirection == direction)
             {
-                var destination = pacman.MoveForward(departure);
-                return destination;
+                var destination = Abs(pacman.MoveForward(departure),gameState);
+                if (gameState.Map[destination] is Wall) return;
+                if (gameState.Map[destination] is SpecialFood) gameState.GodMode = true;
+                if (gameState.Map[destination] is EmptyCell) pacman.State.Eating = false;
+                if (gameState.Map[destination] is Food)
+                {
+                    gameState.CurrentScore++;
+                    pacman.State.Eating = true;
+                }
+                if(gameState.Map[destination] is IGhost)
+                { 
+                    pacman.ChangeDirection(currentDirection);
+                    gameState.IsCollisionWithGhost = true;
+                    return;
+                }
+                UpdateLocation(gameState, destination, departure);
+                return;
             }
-            pacman.ChangeDirection(direction);
-            var tempCoordinate = pacman.MoveForward(departure);
-            if(map[tempCoordinate] is Wall) pacman.ChangeDirection(currentDirection);
             
-            return departure;
+            pacman.ChangeDirection(direction);
+            var tempCoordinate = Abs(pacman.MoveForward(departure),gameState);
+            if(gameState.Map[tempCoordinate] is IGhost)
+            { 
+                pacman.ChangeDirection(currentDirection);
+                gameState.IsCollisionWithGhost = true;
+                return;
+            }
+            if(gameState.Map[tempCoordinate] is Wall)
+            { 
+                pacman.ChangeDirection(currentDirection);
+                return;
+            }
+            UpdateLocation(gameState, tempCoordinate, departure);
         }
 
-        public Coordinate LocatePacman(IDictionary<Coordinate, Cell> map) =>
-            map.Single(c => c.Value is ThePacman).Key;
+        private void UpdateLocation(GameState gameState, Coordinate destination, Coordinate departure)
+        {
+            gameState.Map[destination] = gameState.Map[departure];
+            gameState.Map[departure] = new EmptyCell();
+            gameState.PacmanLocation = destination;
+        }
+        
+        private static Coordinate Abs(Coordinate potentialCoordinate, GameState gameState)
+        {
+            if (potentialCoordinate.X > gameState.Height - 1) potentialCoordinate.X = 0;
+            if (potentialCoordinate.X < 0) potentialCoordinate.X =gameState.Height - 1;
+            if (potentialCoordinate.Y > gameState.Width - 1) potentialCoordinate.Y = 0;
+            if (potentialCoordinate.Y < 0) potentialCoordinate.Y =gameState.Width - 1;
+            return potentialCoordinate;
+        }
     }
 }

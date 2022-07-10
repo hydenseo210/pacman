@@ -11,4 +11,10 @@ public class ConsoleWrapper : IConsoleWrapper
     {
         Console.Write(data);
     }
+
+    public string? Read()
+    {
+        return Console.ReadLine();
+    }
+    public bool KeyAvailable => Console.KeyAvailable;
 }

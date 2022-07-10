@@ -1,3 +1,6 @@
+using System.Drawing;
+using Pastel;
+
 namespace Pacman.Code
 {
     public class ThePacman : Cell, IMovable
@@ -26,6 +29,6 @@ namespace Pacman.Code
 
         public override bool IsValidPath() => true;
 
-        public override string Print() => State.Print();
+        public override string Print() => State.Print().Pastel(Color.FromArgb(255, 255, 0));
     }
 }

@@ -1,9 +1,11 @@
+using System.Drawing;
+using Pastel;
+
 namespace Pacman.Code
 {
     public class SpecialFood: Cell
     {
-        public const int Score = 1;
         public override bool IsValidPath() => true;
-        public override string Print() => Emojis.SpecialFood;
+        public override string Print() => Emojis.SpecialFood.Pastel(Color.FromArgb(0, 255, 0));
     }
 }
