@@ -29,6 +29,10 @@ namespace Pacman.Code
             _pinkyStartingLocation = gameState.PinkyLocation;
 
         }
+
+        public bool IsLastLevel() => _nextState.Count == 0;
+        public bool IsGameOver() => _gameState.LivesList.Count == 0;
+        public void GameOverMessage() => _console.Write(Messages.GameOverMessage);
         private void OpenGhostCage()
         {
             foreach (var ghostGate in _gameState.GhostGateLocation)
@@ -45,8 +49,7 @@ namespace Pacman.Code
                 _console.Write(message);
                 Thread.Sleep(2000);
             }
-
-            OpenGhostCage();
+            
             Print();
         }
 
@@ -119,7 +122,14 @@ namespace Pacman.Code
             _map = _gameState.Map;
         }
 
-        private bool IsWon() => _status.Scores == _gameState.TotalScore && !_status.isLost;
+        public void NextLevel()
+        {
+            LevelOneCompleteMessage();
+            UpdateGameState();
+            Print();
+        }
+
+        public bool IsWon() => _gameState.CurrentScore == _gameState.TotalScore;
 
         private void LevelOneCompleteMessage()
         {
@@ -144,6 +154,11 @@ namespace Pacman.Code
              DashBoard();
              _console.Write("\n");
          }
+
+        public void WonMessage()
+        {
+            _console.Write(Messages.WonMessage);
+        }
     }
     
     

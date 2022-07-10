@@ -30,4 +30,8 @@
       <ProjectReference Include="..\Pacman.Code\Pacman.Code.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="EndToEndTests" />
+    </ItemGroup>
+
 </Project>

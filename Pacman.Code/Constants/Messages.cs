@@ -11,11 +11,9 @@ public class Messages
     public static readonly Func<int, int, List<string>, string> DashBoardMessage = (score, totalScore, livesList) 
         => @$"LEVEL 1
 Total Lives Left: {string.Join( "", livesList)}
-Score: {score} out of {totalScore}
-
-Press Q to Quit
-Press S to Save 
-Press P to Pause";
+Score: {score} out of {totalScore}";
     public static readonly List<string> StartMessage = new List<string>(){ Ready, Set, Go };
     public static string LifeLostMessage = FiggleFonts.Standard.Render("Life Lost");
+    public static readonly string GameOverMessage = FiggleFonts.Standard.Render("GAME OVER!");
+    public static readonly string WonMessage = FiggleFonts.Standard.Render("YOU WIN!");
 }

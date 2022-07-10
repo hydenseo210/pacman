@@ -4,7 +4,7 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-         var currentGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/LevelOneMap.txt");
+         var currentGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/LevelOneMapTest.txt");
          var testGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/test.txt");
          //var currentGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/LevelOneMapOnlyOneFood.txt");
          var gameStateQueue = new Queue<GameState>() { };

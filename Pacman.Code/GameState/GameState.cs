@@ -12,7 +12,7 @@ public record GameState(
     
     public bool GodMode { get; set; } = false;
     
-    public List<string> LivesList { get; set; } = new(){ Emojis.Life, Emojis.Life, Emojis.Life, Emojis.Life, Emojis.Life };
+    public List<string> LivesList { get; set; } = new(){ Emojis.Life };
     public Coordinate PacmanLocation { get; set; } = default!;
     public Coordinate BlinkyLocation { get; set; } = default!;
     public Coordinate PinkyLocation { get; set; } = default!;

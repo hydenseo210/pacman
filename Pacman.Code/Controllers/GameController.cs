@@ -9,6 +9,21 @@ namespace Pacman.Code
             var direction = Directions.Right;
             do
             {
+                if (game.IsWon() && game.IsLastLevel())
+                {
+                    game.WonMessage();
+                    break;
+                }
+                if (game.IsGameOver())
+                {
+                    game.GameOverMessage();
+                    break;
+                }
+                if (game.IsWon())
+                {
+                    game.NextLevel();
+                    game.StartMessage();
+                }
                 if (console.KeyAvailable)
                 {
                     key = console.ReadKey().Key;

@@ -11,7 +11,7 @@ namespace Pacman.Code
             var departure = gameState.PacmanLocation;
             if (gameState.Map[departure] is not ThePacman pacman)
                 throw new InvalidOperationException("No Pacman found");
-            
+            pacman.State.Eating = false;   
             var currentDirection = pacman.State.Direction;
             
             if (currentDirection == direction)
@@ -19,7 +19,12 @@ namespace Pacman.Code
                 var destination = Abs(pacman.MoveForward(departure),gameState);
                 if (gameState.Map[destination] is Wall) return;
                 if (gameState.Map[destination] is SpecialFood) gameState.GodMode = true;
-                if (gameState.Map[destination] is Food) gameState.CurrentScore ++;
+                if (gameState.Map[destination] is EmptyCell) pacman.State.Eating = false;
+                if (gameState.Map[destination] is Food)
+                {
+                    gameState.CurrentScore++;
+                    pacman.State.Eating = true;
+                }
                 if(gameState.Map[destination] is IGhost)
                 { 
                     pacman.ChangeDirection(currentDirection);

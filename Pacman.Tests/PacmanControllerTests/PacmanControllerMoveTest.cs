@@ -93,7 +93,7 @@ public class PacmanControllerTest
     }
 }
 
-class ConsoleWrapperStub : IConsoleWrapper
+public class ConsoleWrapperStub : IConsoleWrapper
 {
     private IList<ConsoleKey> keyCollection;
     private int keyIndex;
