@@ -2,7 +2,7 @@ namespace Pacman.Tests;
 
 public class GameStateGenerator
 {
-    private Dictionary<Coordinate, Cell> _map = new Dictionary<Coordinate, Cell>();
+    private Dictionary<Coordinate, Cell> _map = new();
     private GameState _gameState;
     public GameState InitiateGameState(int height, int width, int TotalScore, Coordinate pacmanLocation, Directions directions )
     {

@@ -92,35 +92,3 @@ public class PacmanControllerTest
         return true;
     }
 }
-
-public class ConsoleWrapperStub : IConsoleWrapper
-{
-    private IList<ConsoleKey> keyCollection;
-    private int keyIndex;
-
-    public ConsoleWrapperStub(IList<ConsoleKey> keyCollection)
-    {
-        this.keyCollection = keyCollection;
-    }
-
-    public string Output = string.Empty;
-
-    public ConsoleKeyInfo ReadKey()
-    {
-        var result = keyCollection[keyIndex];
-        keyIndex++;
-        return new ConsoleKeyInfo((char)result, result, false, false, false);
-    }
-
-    public void Write(string data)
-    {
-        Output += data;
-    }
-
-    public string? Read()
-    {
-        return Console.ReadLine();
-    }
-
-    public bool KeyAvailable => true;
-}

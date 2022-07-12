@@ -5,12 +5,11 @@ namespace Pacman.Code
 {
     public class Game
     {
-        private  GameState _gameState;
+        private GameState _gameState;
         private readonly Queue<GameState> _nextState;
         private  Dictionary<Coordinate,Cell> _map;
         private readonly PacmanController _pacmanController;
         private readonly GhostController _ghostController;
-        private readonly GameStatus _status = new();
         private readonly IConsoleWrapper _console;
         private readonly Coordinate _pacmanStartingLocation;
         private readonly Coordinate _blinkyStartingLocation;
@@ -30,6 +29,7 @@ namespace Pacman.Code
 
         }
 
+        public GameState GetGameState() => _gameState;
         public bool IsLastLevel() => _nextState.Count == 0;
         public bool IsGameOver() => _gameState.LivesList.Count == 0;
         public void GameOverMessage() => _console.Write(Messages.GameOverMessage);
@@ -49,7 +49,8 @@ namespace Pacman.Code
                 _console.Write(message);
                 Thread.Sleep(2000);
             }
-            
+
+            OpenGhostCage();
             Print();
         }
 

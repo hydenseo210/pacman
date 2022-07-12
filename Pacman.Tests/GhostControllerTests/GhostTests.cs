@@ -1,11 +1,13 @@
 namespace Pacman.Tests;
 public class GhostControllerTests
 {
+
     [Theory]
-    [InlineData("Blinky")]
+    [InlineData("blinky")]
     [InlineData("Pinky")]
     public void When_MoveGhost_Is_Called_Ghost_Can_Move_Past_Food_Without_Removing_Them(string ghostName)
     {
+        // change to method for if statement and have it take in a IGhost
         //Arrange
         var gameStateGenerator = new GameStateGenerator();
         var actualGameState =gameStateGenerator.InitiateGameState(1, 10, 6, new Coordinate(0, 8), Directions.Right);

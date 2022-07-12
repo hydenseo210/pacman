@@ -12,11 +12,13 @@ namespace Pacman.Code
                 if (game.IsWon() && game.IsLastLevel())
                 {
                     game.WonMessage();
+                    game.GetGameState().IsWon = true;
                     break;
                 }
                 if (game.IsGameOver())
                 {
                     game.GameOverMessage();
+                    game.GetGameState().IsLost = true;
                     break;
                 }
                 if (game.IsWon())
