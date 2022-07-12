@@ -86,23 +86,3 @@ public class GameTests
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//collision test -> all the ghost get tested
-//live lost test 
-//scoring test
-//moving to next level test

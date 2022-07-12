@@ -7,7 +7,7 @@ public class GameControllerTests
     {
         var actualGameState = new GameDownload().DownloadGameStateFromFile("../../../TestMaps/gameControllerTestMap.txt");
         var expectedGameState = new GameDownload().DownloadGameStateFromFile("../../../TestMaps/gameControllerTestMap2.txt");
-        var gameStateQueue = new Queue<GameState>();
+        var gameStateQueue = new Queue<GameState>(); 
         gameStateQueue.Enqueue(expectedGameState);
         var console = new ConsoleWrapperStub(
                 new List<ConsoleKey>()
@@ -48,8 +48,7 @@ public class GameControllerTests
         var game = new Game(actualGameState, gameStateQueue, pacmanController, ghostController, console);
         GameController.Run(game, console);
         
-        
-        Assert.True(game.GetGameState().IsWon);
+        Assert.True(game.IsLastLevel() && game.IsWon());
     }
     
     [Fact]
@@ -76,7 +75,7 @@ public class GameControllerTests
         GameController.Run(game, console);
         
         
-        Assert.True(game.GetGameState().IsLost);
+        Assert.True(game.IsGameOver());
         //test
     }
 
@@ -116,8 +115,3 @@ public class ConsoleWrapperStub : IConsoleWrapper
 
     public bool KeyAvailable => true;
 }
-
-
-
-//pacman win condition test
-//pacman gets hit by ghost and loses lives

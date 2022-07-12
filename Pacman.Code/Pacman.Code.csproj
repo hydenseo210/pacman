@@ -8,10 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Assets" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Figgle" Version="0.4.0" />
       <PackageReference Include="Moq" Version="4.18.1" />
       <PackageReference Include="Pastel" Version="3.0.1" />

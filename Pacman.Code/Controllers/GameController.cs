@@ -9,23 +9,7 @@ namespace Pacman.Code
             var direction = Directions.Right;
             do
             {
-                if (game.IsWon() && game.IsLastLevel())
-                {
-                    game.WonMessage();
-                    game.GetGameState().IsWon = true;
-                    break;
-                }
-                if (game.IsGameOver())
-                {
-                    game.GameOverMessage();
-                    game.GetGameState().IsLost = true;
-                    break;
-                }
-                if (game.IsWon())
-                {
-                    game.NextLevel();
-                    game.StartMessage();
-                }
+                if (IsGameFinished(game)) break;
                 if (console.KeyAvailable)
                 {
                     key = console.ReadKey().Key;
@@ -43,6 +27,30 @@ namespace Pacman.Code
                 Thread.Sleep(200);
                 Console.Clear();
             } while (key != ConsoleKey.Q);
+        }
+        
+        private static bool IsGameFinished(Game game)
+        {
+            if (game.IsWon() && game.IsLastLevel())
+            {
+                game.WonMessage();
+                game.GetGameState().IsWon = true;
+                return true;
+            }
+            if (game.IsGameOver())
+            {
+                game.GameOverMessage();
+                game.GetGameState().IsLost = true;
+                return true;
+            }
+            if (game.IsWon())
+            {
+                game.NextLevel();
+                game.StartMessage();
+                return false;
+            }
+
+            return false;
         }
 
         private static Directions GetDirectionByKey(ConsoleKey key) =>
