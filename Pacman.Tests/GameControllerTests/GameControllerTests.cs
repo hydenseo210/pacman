@@ -77,6 +77,7 @@ public class GameControllerTests
         
         
         Assert.True(game.GetGameState().IsLost);
+        //test
     }
 
 }
