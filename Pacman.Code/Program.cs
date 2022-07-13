@@ -4,11 +4,11 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-         var currentGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/LevelOneMapTest.txt");
-         var testGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/test.txt");
+         var currentGameState = new GameDownload().DownloadGameStateFromFile("../../../Assets/Maps/LevelOneMapTest.txt");
+         var testGameState = new GameDownload().DownloadGameStateFromFile("../../../Assets/Maps/test.txt");
          //var currentGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/LevelOneMapOnlyOneFood.txt");
          var gameStateQueue = new Queue<GameState>();
-         var nextGameState = new GameDownload().DownloadGameStateFromFile("../../../GameState/LevelTwoMap.txt");
+         var nextGameState = new GameDownload().DownloadGameStateFromFile("../../../Assets/Maps/LevelTwoMap.txt");
          gameStateQueue.Enqueue(nextGameState);
          var console = new ConsoleWrapper();
          var pacmanController = new PacmanController();

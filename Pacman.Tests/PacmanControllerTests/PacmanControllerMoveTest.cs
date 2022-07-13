@@ -2,15 +2,16 @@ namespace Pacman.Tests;
 
 public class PacmanControllerTest
 {
+    private GameStateGenerator _gameStateGenerator;
+    
     [Fact]
     public void Pacman_Can_Move_In_The_Direction_Right_Across_The_Screen_When_Move_Is_Called_Given_Pacman_Is_Facing_Right()
     {
         // Arrange
-        var gameStateGenerator = new GameStateGenerator();
-        var actualGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 0), Directions.Right);
-        gameStateGenerator.ResetMap();
-        var expectedGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 4), Directions.Right);
-        for (var i = 0; i < 4; i++) gameStateGenerator.SetCellToEmptyCell(new Coordinate(0, i));
+        var actualGameState = _gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 0), Directions.Right);
+        _gameStateGenerator.ResetMap();
+        var expectedGameState = _gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 4), Directions.Right);
+        for (var i = 0; i < 4; i++) _gameStateGenerator.SetCellToEmptyCell(new Coordinate(0, i));
         var controller = new PacmanController();
         // Act 
         for (var i = 0; i < 4; i++) controller.Move(actualGameState, Directions.Right);
@@ -25,11 +26,10 @@ public class PacmanControllerTest
     public void Pacman_Can_Move_In_The_Direction_Left_Across_The_Screen_When_Move_Is_Called_Given_Pacman_Is_Facing_Left()
     {
         // Arrange
-        var gameStateGenerator = new GameStateGenerator();
-        var actualGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 4), Directions.Left);
-        gameStateGenerator.ResetMap();
-        var expectedGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 0), Directions.Left);
-        for (var i = 1; i < 5; i++) gameStateGenerator.SetCellToEmptyCell(new Coordinate(0, i));
+        var actualGameState = _gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 4), Directions.Left);
+        _gameStateGenerator.ResetMap();
+        var expectedGameState = _gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 0), Directions.Left);
+        for (var i = 1; i < 5; i++) _gameStateGenerator.SetCellToEmptyCell(new Coordinate(0, i));
         var controller = new PacmanController();
         // Act 
         for (var i = 0; i < 4; i++) controller.Move(actualGameState, Directions.Left);
@@ -44,11 +44,10 @@ public class PacmanControllerTest
     public void Pacman_Can_Move_In_The_Direction_Down_Across_The_Screen_When_Move_Is_Called_Given_Pacman_Is_Facing_Down()
     {
         // Arrange
-        var gameStateGenerator = new GameStateGenerator();
-        var actualGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 0), Directions.Down);
-        gameStateGenerator.ResetMap();
-        var expectedGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(4, 0), Directions.Down);
-        for (var i = 0; i < 4; i++) gameStateGenerator.SetCellToEmptyCell(new Coordinate(i, 0));
+        var actualGameState = _gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 0), Directions.Down);
+        _gameStateGenerator.ResetMap();
+        var expectedGameState = _gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(4, 0), Directions.Down);
+        for (var i = 0; i < 4; i++) _gameStateGenerator.SetCellToEmptyCell(new Coordinate(i, 0));
         var controller = new PacmanController();
         // Act 
         for (var i = 0; i < 4; i++) controller.Move(actualGameState, Directions.Down);
@@ -63,11 +62,10 @@ public class PacmanControllerTest
     public void Pacman_Can_Move_In_The_Direction_Up_Across_The_Screen_When_Move_Is_Called_Given_Pacman_Is_Facing_Up()
     {
         // Arrange
-        var gameStateGenerator = new GameStateGenerator();
-        var actualGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(4, 0), Directions.Up);
-        gameStateGenerator.ResetMap();
-        var expectedGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 0), Directions.Up);
-        for (var i = 1; i < 5; i++) gameStateGenerator.SetCellToEmptyCell(new Coordinate(i, 0));
+        var actualGameState = _gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(4, 0), Directions.Up);
+        _gameStateGenerator.ResetMap();
+        var expectedGameState = _gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 0), Directions.Up);
+        for (var i = 1; i < 5; i++) _gameStateGenerator.SetCellToEmptyCell(new Coordinate(i, 0));
         var controller = new PacmanController();
         // Act 
         for (var i = 0; i < 4; i++) controller.Move(actualGameState, Directions.Up);

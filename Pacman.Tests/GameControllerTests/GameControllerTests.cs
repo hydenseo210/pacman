@@ -14,6 +14,7 @@ public class GameControllerTests
                 {
                     ConsoleKey.RightArrow,
                     ConsoleKey.RightArrow,
+                    ConsoleKey.RightArrow,
                     ConsoleKey.Q,
                     
                 });
@@ -36,6 +37,7 @@ public class GameControllerTests
         var console = new ConsoleWrapperStub(
             new List<ConsoleKey>()
             {
+                ConsoleKey.RightArrow,
                 ConsoleKey.RightArrow,
                 ConsoleKey.RightArrow,
                 ConsoleKey.Q,

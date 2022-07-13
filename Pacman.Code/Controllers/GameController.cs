@@ -14,16 +14,12 @@ namespace Pacman.Code
                 {
                     key = console.ReadKey().Key;
                     direction = GetDirectionByKey(key);
-                    game.MovePacman(direction);
-                    game.MoveBlinky();
-                    game.MovePinky();
                 }
-                else
-                {
-                    game.MovePacman(direction);
-                    game.MoveBlinky();
-                    game.MovePinky();
-                }
+                
+                game.MovePacman(direction);
+                game.MoveBlinky();
+                game.MovePinky();
+                
                 Thread.Sleep(200);
                 Console.Clear();
             } while (key != ConsoleKey.Q);
@@ -34,13 +30,11 @@ namespace Pacman.Code
             if (game.IsWon() && game.IsLastLevel())
             {
                 game.WonMessage();
-                game.GetGameState().IsWon = true;
                 return true;
             }
             if (game.IsGameOver())
             {
                 game.GameOverMessage();
-                game.GetGameState().IsLost = true;
                 return true;
             }
             if (game.IsWon())
