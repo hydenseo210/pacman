@@ -1,5 +1,4 @@
 # Pacman Kata
-# By: Hyden Seo
 
 Welcome to my pacman kata. The focus on this kata was to implement pacman using TDD, Top down approach and end to end tests.
 
