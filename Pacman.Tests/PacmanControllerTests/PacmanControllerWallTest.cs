@@ -1,98 +1,62 @@
+using Moq;
+
 namespace Pacman.Tests;
 
 public class PacmanControllerWallTest
 {
-    [Fact]
-    public void Pacman_Stops_Moving_In_The_Direction_Right_Across_The_Screen_When_Wall_Is_Present_Given_Pacman_Is_Facing_Right()
+
+    [Theory]
+    [MemberData(nameof(MovementData))]
+    public void Grid_Should_NOT_Update_And_Pacman_Should_Not_Move_When_Hitting_A_Wall_When_Move_Is_Called(
+        Directions direction, int height, int width, int totalScore, 
+        Dictionary<Coordinate,Cell> grid, Coordinate coordinate,  Dictionary<Coordinate,Cell> expectedGrid)
     {
         // Arrange
-        var gameStateGenerator = new GameStateGenerator();
-        var actualGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 0), Directions.Right);
-        gameStateGenerator.SetCellToVerticalWall(new Coordinate(0, 3));
-        gameStateGenerator.ResetMap();
-        var expectedGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 2), Directions.Right);
-        for (var i = 0; i < 2; i++) gameStateGenerator.SetCellToEmptyCell(new Coordinate(0, i));
-        gameStateGenerator.SetCellToVerticalWall(new Coordinate(0, 3));
+        var actualMap = new Map(height, width, totalScore, grid, 
+            Stub.ListOfCoordinates, coordinate, Stub.Coordinate , Stub.Coordinate);
         var controller = new PacmanController();
         // Act 
-        for (var i = 0; i < 4; i++) controller.Move(actualGameState, Directions.Right);
-
-        var actualMap = actualGameState.Map;
-        var expectedMap = expectedGameState.Map;
+        controller.Move(actualMap, direction);
+        
+        var actualGrid = actualMap.Grid;
         // Assert
-        Assert.True(Compare(expectedMap, actualMap));
+        Assert.True(Compare.Dictionaries(expectedGrid, actualGrid));
     }
     
-    [Fact]
-    public void Pacman_Stops_Moving_In_The_Direction_Left_Across_The_Screen_When_Wall_Is_Present_Given_Pacman_Is_Facing_Left()
-    {
-        // Arrange
-        var gameStateGenerator = new GameStateGenerator();
-        var actualGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 4), Directions.Left);
-        gameStateGenerator.SetCellToVerticalWall(new Coordinate(0, 1));
-        gameStateGenerator.ResetMap();
-        var expectedGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 2), Directions.Left);
-        for (var i = 3; i < 5; i++) gameStateGenerator.SetCellToEmptyCell(new Coordinate(0, i));
-        gameStateGenerator.SetCellToVerticalWall(new Coordinate(0, 1));
-        var controller = new PacmanController();
-        // Act 
-        for (var i = 0; i < 4; i++) controller.Move(actualGameState, Directions.Left);
-
-        var actualMap = actualGameState.Map;
-        var expectedMap = expectedGameState.Map;
-        // Assert
-        Assert.True(Compare(expectedMap, actualMap));
-    }
-    
-    [Fact]
-    public void Pacman_Can_Move_In_The_Direction_Down_Across_The_Screen_When_Move_Is_Called_Given_Pacman_Is_Facing_Down()
-    {
-        // Arrange
-        var gameStateGenerator = new GameStateGenerator();
-        var actualGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 0), Directions.Down);
-        gameStateGenerator.ResetMap();
-        var expectedGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(4, 0), Directions.Down);
-        for (var i = 0; i < 4; i++) gameStateGenerator.SetCellToEmptyCell(new Coordinate(i, 0));
-        var controller = new PacmanController();
-        // Act 
-        for (var i = 0; i < 4; i++) controller.Move(actualGameState, Directions.Down);
-
-        var actualMap = actualGameState.Map;
-        var expectedMap = expectedGameState.Map;
-        // Assert
-        Assert.True(Compare(expectedMap, actualMap));
-    }
-    
-    [Fact]
-    public void Pacman_Can_Move_In_The_Direction_Up_Across_The_Screen_When_Move_Is_Called_Given_Pacman_Is_Facing_Up()
-    {
-        // Arrange
-        var gameStateGenerator = new GameStateGenerator();
-        var actualGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(4, 0), Directions.Up);
-        gameStateGenerator.ResetMap();
-        var expectedGameState = gameStateGenerator.InitiateGameState(5, 5, 24, new Coordinate(0, 0), Directions.Up);
-        for (var i = 1; i < 5; i++) gameStateGenerator.SetCellToEmptyCell(new Coordinate(i, 0));
-        var controller = new PacmanController();
-        // Act 
-        for (var i = 0; i < 4; i++) controller.Move(actualGameState, Directions.Up);
-
-        var actualMap = actualGameState.Map;
-        var expectedMap = expectedGameState.Map;
-        // Assert
-        Assert.True(Compare(expectedMap, actualMap));
-    }
-
-    private bool Compare(Dictionary<Coordinate, Cell> x, Dictionary<Coordinate, Cell> y)
-    {
-        if (x.Count != y.Count)
-            return false;
-        if (x.Keys.Except(y.Keys).Any())
-            return false;
-        if (y.Keys.Except(x.Keys).Any())
-            return false;
-        foreach (var pair in x)
-            if(x[pair.Key].GetType() != y[pair.Key].GetType())
-                return false;
-        return true;
-    }
+    public static IEnumerable<object[]> MovementData =>
+        new List<object[]>
+        {
+            new object[] { Directions.Right, 
+                PacmanControllerWallTestMap.TestMapOneHeight, 
+                PacmanControllerWallTestMap.TestMapOneWidth, 
+                PacmanControllerWallTestMap.TestMapOneTotalScore,
+                PacmanControllerWallTestGrid1.actualGrid,
+                PacmanControllerWallTestGrid1.ActualPacmanCoordinate,
+                PacmanControllerWallTestGrid1.expectedGrid
+            },
+            new object[] { Directions.Left, 
+                PacmanControllerWallTestMap.TestMapTwoHeight, 
+                PacmanControllerWallTestMap.TestMapTwoWidth, 
+                PacmanControllerWallTestMap.TestMapTwoTotalScore,
+                PacmanControllerWallTestGrid2.actualGrid,
+                PacmanControllerWallTestGrid2.ActualPacmanCoordinate,
+                PacmanControllerWallTestGrid2.expectedGrid,
+            },
+            new object[] { Directions.Up, 
+                PacmanControllerWallTestMap.TestMapThreeHeight, 
+                PacmanControllerWallTestMap.TestMapThreeWidth, 
+                PacmanControllerWallTestMap.TestMapThreeTotalScore,
+                PacmanControllerWallTestGrid3.actualGrid,
+                PacmanControllerWallTestGrid3.ActualPacmanCoordinate,
+                PacmanControllerWallTestGrid3.expectedGrid,
+            },
+            new object[] { Directions.Down, 
+                PacmanControllerWallTestMap.TestMapFourHeight, 
+                PacmanControllerWallTestMap.TestMapFourWidth, 
+                PacmanControllerWallTestMap.TestMapFourTotalScore,
+                PacmanControllerWallTestGrid4.actualGrid,
+                PacmanControllerWallTestGrid4.ActualPacmanCoordinate,
+                PacmanControllerWallTestGrid4.expectedGrid,
+            }
+        };
 }

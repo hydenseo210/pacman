@@ -1,23 +1,26 @@
 namespace Pacman.Code;
 
-public class GameDownload
+public static class GameDownload
 {
-    public GameState DownloadGameStateFromFile(string filePath)
+    public static Map DownloadMapFromFile(string filePath)
     {
+        var defaultCoordinate = new Coordinate(0, 0);
         var fileData = File.ReadAllLines(filePath);
-        if (fileData.Length == 0) throw new InvalidDataException("File is Empty.");
-        var height = fileData.Length;
-        var width = fileData.First().Length;
-        var pacmanLocation = new Coordinate(0, 0);
-        var blinkyLocation = new Coordinate(0, 0);
-        var pinkyLocation = new Coordinate(0, 0);
-        var totalScore = 0;
-        var ghostGateLocation = new List<Coordinate>() { };
-        Dictionary<Coordinate, Cell> mapData = new Dictionary<Coordinate, Cell>() { };
         
-        for (var x = 0; x < height; x++)
+        if (fileData.Length == 0) throw new InvalidDataException("File is Empty.");
+
+        var map = new Map(fileData.Length, fileData.First().Length, 0,
+            new Dictionary<Coordinate, Cell>(), new List<Coordinate>(),
+            defaultCoordinate, defaultCoordinate, defaultCoordinate);
+        // {
+        //     Height = fileData.Length,
+        //     Width = fileData.First().Length
+        //
+        // };
+
+        for (var x = 0; x < map.Height; x++)
         {
-            for (var y = 0; y < width; y++)
+            for (var y = 0; y < map.Width; y++)
             {
                 
                 var coordinate = new Coordinate(x, y);
@@ -25,82 +28,78 @@ public class GameDownload
                 switch (currentString)
                 {
                     case var value when value == Emojis.PacmanRight:
-                        mapData.Add(coordinate, new ThePacman());
-                        pacmanLocation = coordinate;
+                        map.AddToMap(coordinate, new ThePacman());
+                        map.PacmanCoordinate = coordinate;
                         break;
                     case var value when value == Emojis.Blinky:
-                        mapData.Add(coordinate, new Blinky(new AggressiveBehaviour()));
-                        blinkyLocation = coordinate;
+                        map.AddToMap(coordinate, new Blinky(new AggressiveBehaviour()));
+                        map.BlinkyLocation = coordinate;
                         break;
                     case var value when value == Emojis.Pinky:
-                        mapData.Add(coordinate, new Pinky(new AggressiveBehaviour()));
-                        pinkyLocation = coordinate;
+                        map.AddToMap(coordinate, new Pinky(new AggressiveBehaviour()));
+                        map.PinkyLocation = coordinate;
                         break;
                     case Emojis.EmptyString:
-                        mapData.Add(coordinate, new EmptyCell());
+                        map.AddToMap(coordinate, new EmptyCell());
                         break;
                     case Emojis.Food:
-                        mapData.Add(coordinate, new Food());
-                        totalScore++;
+                        map.AddToMap(coordinate, new Food());
+                        map.TotalScore++;
                         break;
                     case Emojis.SpecialFood:
-                        mapData.Add(coordinate, new SpecialFood());
+                        map.AddToMap(coordinate, new SpecialFood());
                         break;
                     case Emojis.WallUpLeft:
-                        mapData.Add(coordinate, new WallUpLeft());
+                        map.AddToMap(coordinate, new WallUpLeft());
                         break;
                     case Emojis.WallUpRight:
-                        mapData.Add(coordinate, new WallUpRight());
+                        map.AddToMap(coordinate, new WallUpRight());
                         break;
                     case Emojis.WallDownLeft:
-                        mapData.Add(coordinate, new WallDownLeft());
+                        map.AddToMap(coordinate, new WallDownLeft());
                         break;
                     case Emojis.WallDownRight:
-                        mapData.Add(coordinate, new WallDownRight());
+                        map.AddToMap(coordinate, new WallDownRight());
                         break;
                     case Emojis.WallHorizontal:
-                        mapData.Add(coordinate, new WallHorizontal());
+                        map.AddToMap(coordinate, new WallHorizontal());
                         break;
                     case Emojis.WallRightMiddle:
-                        mapData.Add(coordinate, new WallRightMiddle());
+                        map.AddToMap(coordinate, new WallRightMiddle());
                         break;
                     case Emojis.WallLeftMiddle:
-                        mapData.Add(coordinate, new WallLeftMiddle());
+                        map.AddToMap(coordinate, new WallLeftMiddle());
                         break;
                     case Emojis.WallUpMiddle:
-                        mapData.Add(coordinate, new WallUpMiddle());
+                        map.AddToMap(coordinate, new WallUpMiddle());
                         break;
                     case Emojis.WallDownMiddle:
-                        mapData.Add(coordinate, new WallDownMiddle());
+                        map.AddToMap(coordinate, new WallDownMiddle());
                         break;
                     case Emojis.WallDownMiddleThick:
-                        mapData.Add(coordinate, new WallDownMiddleThick());
+                        map.AddToMap(coordinate, new WallDownMiddleThick());
                         break;
                     case Emojis.WallVertical:
-                        mapData.Add(coordinate, new WallVertical());
+                        map.AddToMap(coordinate, new WallVertical());
                         break;
                     case Emojis.WallSmallMiddle:
-                        mapData.Add(coordinate, new WallSmallMiddle());
+                        map.AddToMap(coordinate, new WallSmallMiddle());
                         break;
                     case Emojis.WallCross:
-                        mapData.Add(coordinate, new WallCross());
+                        map.AddToMap(coordinate, new WallCross());
                         break;
                     case Emojis.GhostGate:
-                        ghostGateLocation.Add(coordinate);
-                        mapData.Add(coordinate, new GhostGate());
+                        map.AddToGhostGate(coordinate);
+                        map.AddToMap(coordinate, new GhostGate());
                         break;
                     case Emojis.Padding:
-                        mapData.Add(coordinate, new Padding());
+                        map.AddToMap(coordinate, new Padding());
                         break;
                     
                 }
             }
         }
-        
-        return new GameState(height, width, mapData , ghostGateLocation, totalScore) 
-            { PacmanLocation = pacmanLocation, 
-                BlinkyLocation = blinkyLocation,
-                PinkyLocation = pinkyLocation
-            };
+
+        return map;
     }
 }

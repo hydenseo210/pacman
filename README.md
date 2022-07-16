@@ -37,4 +37,6 @@ dotnet test
 
 # Design Decisions
 
+Strategy pattern was used to 
+
 ## Design Patterns

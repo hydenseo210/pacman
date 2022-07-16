@@ -6,5 +6,7 @@ public enum ConsoleKeysUsed
     RightArrow = ConsoleKey.RightArrow,
     UpArrow = ConsoleKey.UpArrow,
     DownArrow = ConsoleKey.DownArrow,
+    QKey = ConsoleKey.Q,
     Escape = ConsoleKey.Escape
+    
 }

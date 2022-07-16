@@ -5,65 +5,65 @@ namespace Pacman.Code
     public class PacmanController
     {
         public void Move(
-            GameState gameState,
+            IMap map,
             Directions direction)
         {
-            var departure = gameState.PacmanLocation;
-            if (gameState.Map[departure] is not ThePacman pacman)
+            var departure = map.PacmanCoordinate;
+            if (map.Grid[departure] is not ThePacman pacman)
                 throw new InvalidOperationException("No Pacman found");
             pacman.State.Eating = false;   
             var currentDirection = pacman.State.Direction;
             
             if (currentDirection == direction)
             {
-                var destination = Abs(pacman.MoveForward(departure),gameState);
-                if (gameState.Map[destination] is Wall) return;
-                if (gameState.Map[destination] is SpecialFood) gameState.GodMode = true;
-                if (gameState.Map[destination] is EmptyCell) pacman.State.Eating = false;
-                if (gameState.Map[destination] is Food)
+                var destination = Abs(pacman.MoveForward(departure),map);
+                if (map.Grid[destination] is Wall) return;
+                //if (map.Grid[destination] is SpecialFood) map.GodMode = true;
+                if (map.Grid[destination] is EmptyCell) pacman.State.Eating = false;
+                if (map.Grid[destination] is Food)
                 {
-                    gameState.CurrentScore++;
+                    //map.CurrentScore++;
                     pacman.State.Eating = true;
                 }
-                if(gameState.Map[destination] is IGhost)
+                if(map.Grid[destination] is IGhost)
                 { 
                     pacman.ChangeDirection(currentDirection);
-                    gameState.IsCollisionWithGhost = true;
+                    // map.IsCollisionWithGhost = true;
                     return;
                 }
-                UpdateLocation(gameState, destination, departure);
+                UpdateLocation(map, destination, departure);
                 return;
             }
             
             pacman.ChangeDirection(direction);
-            var tempCoordinate = Abs(pacman.MoveForward(departure),gameState);
-            if(gameState.Map[tempCoordinate] is IGhost)
+            var tempCoordinate = Abs(pacman.MoveForward(departure),map);
+            if(map.Grid[tempCoordinate] is IGhost)
             { 
                 pacman.ChangeDirection(currentDirection);
-                gameState.IsCollisionWithGhost = true;
+                // map.IsCollisionWithGhost = true;
                 return;
             }
-            if(gameState.Map[tempCoordinate] is Wall)
+            if(map.Grid[tempCoordinate] is Wall)
             { 
                 pacman.ChangeDirection(currentDirection);
                 return;
             }
-            UpdateLocation(gameState, tempCoordinate, departure);
+            UpdateLocation(map, tempCoordinate, departure);
         }
 
-        private void UpdateLocation(GameState gameState, Coordinate destination, Coordinate departure)
+        private void UpdateLocation(IMap map, Coordinate destination, Coordinate departure)
         {
-            gameState.Map[destination] = gameState.Map[departure];
-            gameState.Map[departure] = new EmptyCell();
-            gameState.PacmanLocation = destination;
+            map.Grid[destination] = map.Grid[departure];
+            map.Grid[departure] = new EmptyCell();
+            map.PacmanCoordinate = destination;
         }
         
-        private static Coordinate Abs(Coordinate potentialCoordinate, GameState gameState)
+        private static Coordinate Abs(Coordinate potentialCoordinate, IMap map)
         {
-            if (potentialCoordinate.X > gameState.Height - 1) potentialCoordinate.X = 0;
-            if (potentialCoordinate.X < 0) potentialCoordinate.X =gameState.Height - 1;
-            if (potentialCoordinate.Y > gameState.Width - 1) potentialCoordinate.Y = 0;
-            if (potentialCoordinate.Y < 0) potentialCoordinate.Y =gameState.Width - 1;
+            if (potentialCoordinate.X > map.Height - 1) potentialCoordinate.X = 0;
+            if (potentialCoordinate.X < 0) potentialCoordinate.X =map.Height - 1;
+            if (potentialCoordinate.Y > map.Width - 1) potentialCoordinate.Y = 0;
+            if (potentialCoordinate.Y < 0) potentialCoordinate.Y =map.Width - 1;
             return potentialCoordinate;
         }
     }
