@@ -1,6 +1,6 @@
 namespace Pacman.Tests;
 
-public static class GhostControllerBlinkyTestMap
+public static class GhostControllerPinkyTestMap
 {
     
     public const int TestMapOneHeight = 5;

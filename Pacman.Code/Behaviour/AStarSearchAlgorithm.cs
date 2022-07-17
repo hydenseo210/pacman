@@ -5,10 +5,10 @@ public class AStarSearchAlgorithm
     private static int Width { get; set; }
     private static int Height { get; set; }
 
-    public List<Coordinate> Execute(GameState gameState, Coordinate ghostLocation, IChaseBehaviour behaviour)
+    public List<Coordinate> Execute(IMap map, Coordinate ghostLocation, IChaseBehaviour behaviour)
     {
-        Width = gameState.Width;
-        Height = gameState.Height;
+        Width = map.Width;
+        Height = map.Height;
         
         var start = new Tile
         {
@@ -18,14 +18,12 @@ public class AStarSearchAlgorithm
 
         var finish = new Tile
         {
-            Y = gameState.PacmanLocation.Y,
-            X = gameState.PacmanLocation.X
+            Y = map.PacmanCoordinate.Y,
+            X = map.PacmanCoordinate.X
         };
-        var shortestPath = new List<Coordinate>() { };
+        var shortestPath = new List<Coordinate>();
         start.SetDistance(finish.X, finish.Y);
-        var activeTiles = new List<Tile>();
-        activeTiles.Add(start);
-
+        var activeTiles = new List<Tile> { start };
         var visitedTiles = new List<Tile>();
 
         while (activeTiles.Any())
@@ -49,7 +47,7 @@ public class AStarSearchAlgorithm
 
             visitedTiles.Add(checkTile);
             activeTiles.Remove(checkTile);
-            var walkableTiles = GetWalkableTiles(gameState.Map, checkTile, finish);
+            var walkableTiles = GetWalkableTiles(map.Grid, checkTile, finish);
             foreach (var walkableTile in walkableTiles)
             {
                 if (visitedTiles.Any(x => x.X == walkableTile.X && x.Y == walkableTile.Y)) continue;
@@ -84,7 +82,7 @@ public class AStarSearchAlgorithm
         return shortestPath;
     }
     
-    private static List<Tile> GetWalkableTiles(IDictionary<Coordinate, Cell> map, Tile currentTile, Tile targetTile)
+    private static List<Tile> GetWalkableTiles(IDictionary<Coordinate, Cell> grid, Tile currentTile, Tile targetTile)
     {
         var possibleTiles = new List<Tile>()
         {
@@ -119,7 +117,7 @@ public class AStarSearchAlgorithm
         };
         possibleTiles.ForEach(tile => tile.SetDistance(targetTile.X, targetTile.Y));
         var filterTiles = possibleTiles
-            .Where(tile => map[new Coordinate(tile.X, tile.Y)].IsValidPath())
+            .Where(tile => grid[new Coordinate(tile.X, tile.Y)].IsValidPath())
             .ToList();
         return filterTiles;
     }

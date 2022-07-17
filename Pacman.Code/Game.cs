@@ -1,174 +1,118 @@
-// using System.Text;
-// using Figgle;
-//
-// namespace Pacman.Code
-// {
-//     public class Game
-//     {
-//         private GameState _gameState;
-//         private readonly Queue<GameState> _nextState;
-//         private  Dictionary<Coordinate,Cell> _map;
-//         private readonly PacmanController _pacmanController;
-//         private readonly GhostController _ghostController;
-//         private readonly IConsoleWrapper _console;
-//         private readonly IThreadSleeper _threadSleeper;
-//         private readonly Coordinate _pacmanStartingLocation;
-//         private readonly Coordinate _blinkyStartingLocation;
-//         private readonly Coordinate _pinkyStartingLocation;
-//
-//         public Game(GameState gameState, 
-//             Queue<GameState> nextStates, 
-//             PacmanController pacmanController, 
-//             GhostController ghostController, 
-//             IConsoleWrapper console,
-//             IThreadSleeper threadSleeper
-//             )
-//         {
-//             _console = console;
-//             _threadSleeper = threadSleeper;
-//             _gameState = gameState;
-//             _nextState = nextStates;
-//             _map = gameState.Map;
-//             _pacmanController = pacmanController;
-//             _ghostController = ghostController;
-//             _pacmanStartingLocation = gameState.PacmanLocation;
-//             _blinkyStartingLocation = gameState.BlinkyLocation;
-//             _pinkyStartingLocation = gameState.PinkyLocation;
-//
-//         }
-//
-//         public GameState GetGameState() => _gameState;
-//         public bool IsLastLevel() => _nextState.Count == 0;
-//         public bool IsGameOver() => _gameState.LivesList.Count == 0;
-//         public void GameOverMessage() => _console.Write(Messages.GameOverMessage);
-//         private void OpenGhostCage()
-//         {
-//             foreach (var ghostGate in _gameState.GhostGateLocation)
-//             {
-//                 _gameState.Map[ghostGate] = new EmptyCell();
-//             }
-//         }
-//
-//         public void StartMessage()
-//         {
-//             foreach (var message in Messages.StartMessage)
-//             {
-//                 Print();
-//                 _console.Write(message);
-//                 _threadSleeper.Sleep(2000);
-//             }
-//
-//             OpenGhostCage();
-//             Print();
-//         }
-//
-//         private void DashBoard() => _console.Write(Messages.DashBoardMessage(_gameState.CurrentScore, _gameState.TotalScore, _gameState.LivesList));
-//         private void PacmanMessage() => _console.Write(Messages.Pacman);
-//         public void MovePacman(Directions direction)
-//         {
-//             _pacmanController.Move(_gameState, direction);
-//             Print();
-//             if (_gameState.IsCollisionWithGhost)
-//             {
-//                 _gameState.LivesList = _gameState.LivesList.GetRange(0, _gameState.LivesList.Count - 1);
-//                 ResetPosition();
-//                 _gameState.IsCollisionWithGhost = false;
-//             }
-//             if (_gameState.GodMode)
-//             {
-//                 _ghostController.ChangeGhostsToFrightened();
-//                 _gameState.GodMode = false;
-//             }
-//             
-//         }
-//
-//         public void MoveBlinky()
-//         {
-//             _ghostController.MoveBlinky(_gameState);
-//             Print();
-//             if (_gameState.IsCollisionWithGhost)
-//             {
-//                 _gameState.LivesList = _gameState.LivesList.GetRange(0, _gameState.LivesList.Count - 1);
-//                 ResetPosition();
-//                 _gameState.IsCollisionWithGhost = false;
-//             }
-//         }
-//
-//         public void MovePinky()
-//         {
-//             _ghostController.MovePinky(_gameState);
-//             Print();
-//             if (_gameState.IsCollisionWithGhost)
-//             {
-//                 _gameState.LivesList = _gameState.LivesList.GetRange(0, _gameState.LivesList.Count - 1);
-//                 ResetPosition();
-//                 _gameState.IsCollisionWithGhost = false;
-//             }
-//         }
-//
-//         private void ResetPosition()
-//         {
-//             _gameState.Map[_gameState.PacmanLocation] = new EmptyCell();
-//             _gameState.PacmanLocation = _pacmanStartingLocation;
-//             _gameState.Map[_pacmanStartingLocation] = new ThePacman();
-//
-//             _gameState.Map[_gameState.BlinkyLocation] = _ghostController.BlinkyTrail;
-//             _gameState.BlinkyLocation = _blinkyStartingLocation;
-//             _gameState.Map[_blinkyStartingLocation] = new Blinky(new AggressiveBehaviour());
-//
-//             _gameState.Map[_gameState.PinkyLocation] = _ghostController.PinkyTrail;
-//             _gameState.PinkyLocation = _pinkyStartingLocation;
-//             _gameState.Map[_pinkyStartingLocation] = new Pinky(new AggressiveBehaviour());
-//
-//             _ghostController.Reset(_gameState);
-//
-//             _console.Write(Messages.LifeLostMessage);
-//             _threadSleeper.Sleep(2000);
-//         }
-//
-//         private void UpdateGameState() {
-//             _gameState = _nextState.Dequeue();
-//             _map = _gameState.Map;
-//         }
-//
-//         public void NextLevel()
-//         {
-//             LevelOneCompleteMessage();
-//             UpdateGameState();
-//             Print();
-//         }
-//
-//         public bool IsWon() => _gameState.CurrentScore == _gameState.TotalScore;
-//
-//         private void LevelOneCompleteMessage()
-//         {
-//             _console.Write(Messages.LevelOneMessage);
-//             _threadSleeper.Sleep(2000);
-//         }
-//         private void Print()
-//         {
-//             PacmanMessage();
-//              for (var x = 0; x < _gameState.Height; x++)
-//              {
-//                  var row = "";
-//                  for (var y = 0; y < _gameState.Width; y++)
-//                  {
-//                      var coordinate = new Coordinate(x, y);
-//                      var cell = _map[coordinate].Print();
-//                      row += cell;
-//                  }
-//                  _console.Write(row);
-//                  _console.Write("\n");
-//              }
-//              DashBoard();
-//              _console.Write("\n");
-//          }
-//
-//         public void WonMessage()
-//         {
-//             _console.Write(Messages.WonMessage);
-//         }
-//     }
-//     
-//     
-// }
+using System.Text;
+using Figgle;
+
+namespace Pacman.Code
+{
+    public class Game
+    {
+        private IMap _map;
+        private readonly Queue<IMap> _nextMap;
+        private readonly PacmanController _pacmanController;
+        private readonly GhostController _ghostController;
+        private readonly IGameStatus _gameStatus;
+        private readonly Printer _printer;
+        private readonly Coordinate _pacmanStartingLocation;
+        private readonly Coordinate _blinkyStartingCoordinate;
+        private readonly Coordinate _pinkyStartingCoordinate;
+
+        public Game(IGameStatus _gameStatus, IMap map, Queue<IMap> nextMap, 
+            PacmanController pacmanController, GhostController ghostController, Printer printer
+            )
+        {
+            this._gameStatus = _gameStatus;
+            _printer = printer;
+            _map = map;
+            _nextMap = nextMap;
+            _pacmanController = pacmanController;
+            _ghostController = ghostController;
+            _pacmanStartingLocation = _map.PacmanCoordinate;
+            _blinkyStartingCoordinate = _map.BlinkyCoordinate;
+            _pinkyStartingCoordinate = _map.PinkyCoordinate;
+
+        }
+        public bool IsWon() => _map.CurrentScore == _map.TotalScore;
+        public IMap GetMap() => _map;
+        public bool IsLastLevel() => _nextMap.Count == 0;
+        public bool IsGameOver() => _map.LivesList.Count == 0;
+        private void OpenGhostCage()
+        {
+            foreach (var ghostGate in _map.GhostGateCoordinates)
+            {
+                _map.Grid[ghostGate] = new EmptyCell();
+            }
+        }
+        
+        public void MovePacman(Directions direction)
+        {
+            _pacmanController.Move(_map, direction);
+            _printer.PrintGameConsole();
+            if (_map.IsCollisionWithGhost)
+            {
+                _map.LivesList = _map.LivesList.GetRange(0, _map.LivesList.Count - 1);
+                ResetPosition();
+                _map.IsCollisionWithGhost = false;
+            }
+            if (_map.GodMode)
+            {
+                _ghostController.ChangeGhostsToFrightened();
+                _map.GodMode = false;
+            }
+            
+        }
+        public void MoveBlinky()
+        {
+            _ghostController.MoveBlinky(_map);
+            _printer.PrintGameConsole();
+            if (_map.IsCollisionWithGhost)
+            {
+                _map.LivesList = _map.LivesList.GetRange(0, _map.LivesList.Count - 1);
+                ResetPosition();
+                _map.IsCollisionWithGhost = false;
+            }
+        }
+        public void MovePinky()
+        {
+            _ghostController.MovePinky(_map);
+            _printer.PrintGameConsole();
+            if (_map.IsCollisionWithGhost)
+            {
+                _map.LivesList = _map.LivesList.GetRange(0, _map.LivesList.Count - 1);
+                ResetPosition();
+                _map.IsCollisionWithGhost = false;
+            }
+        }
+
+        private void ResetPosition() // write life lost message - sleep 2000
+        {
+            _map.Grid[_map.PacmanCoordinate] = new EmptyCell();
+            _map.PacmanCoordinate = _pacmanStartingLocation;
+            _map.Grid[_pacmanStartingLocation] = new ThePacman();
+
+            _map.Grid[_map.BlinkyCoordinate] = _ghostController.BlinkyTrail;
+            _map.BlinkyCoordinate = _blinkyStartingCoordinate;
+            _map.Grid[_blinkyStartingCoordinate] = new Blinky(new AggressiveBehaviour());
+
+            _map.Grid[_map.PinkyCoordinate] = _ghostController.PinkyTrail;
+            _map.PinkyCoordinate = _pinkyStartingCoordinate;
+            _map.Grid[_pinkyStartingCoordinate] = new Pinky(new AggressiveBehaviour());
+
+            _ghostController.Reset(_map);
+            
+        }
+
+        private void UpdateGameState() {
+            _map = _nextMap.Dequeue();
+        }
+
+        public void NextLevel()
+        {
+            _printer.LevelOneCompleteMessage();
+            UpdateGameState();
+            _printer.PrintGameConsole();
+        }
+        
+
+    }
+    
+    
+}

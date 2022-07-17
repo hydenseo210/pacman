@@ -19,8 +19,8 @@ namespace Pacman.Code
             if (_chaseBehaviour is AggressiveBehaviour) return Emojis.Blinky.Pastel(Color.FromArgb(255, 0, 0));
             return Emojis.Blinky.Pastel(Color.FromArgb(148, 0, 211));
         }
-        public void CreateMoveList(GameState gameState) =>
-            _moveList = _chaseBehaviour.Chase(gameState, gameState.BlinkyLocation);
+        public void CreateMoveList(IMap map) =>
+            _moveList = _chaseBehaviour.Chase(map, map.BlinkyCoordinate);
 
         public void ChangeBehaviour(IChaseBehaviour chaseBehaviour)
         {

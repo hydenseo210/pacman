@@ -8,6 +8,7 @@ public interface IMap
     public Dictionary<Coordinate, Cell> Grid { get; set; }
     public List<Coordinate> GhostGateCoordinates { get; set; }
     public Coordinate PacmanCoordinate { get; set; }
-    public Coordinate BlinkyLocation { get; set; }
-    public Coordinate PinkyLocation { get; set; }
+    public Coordinate BlinkyCoordinate { get; set; }
+    public Coordinate PinkyCoordinate { get; set; }
+    public bool IsCollisionWithGhost { get; set; }
 }

@@ -66,7 +66,7 @@ public class GameDownloadTests
     public void DownloadMapFromFile_Returns_Correct_Pinky_Coordinate_Within_The_Map(string filePath, Coordinate expectedPinkyCoordinate)
     {
         
-        var actualPinkyCoordinate = GameDownload.DownloadMapFromFile(filePath).PinkyLocation;
+        var actualPinkyCoordinate = GameDownload.DownloadMapFromFile(filePath).PinkyCoordinate;
         
         Assert.Equal(expectedPinkyCoordinate, actualPinkyCoordinate);
     }
@@ -76,7 +76,7 @@ public class GameDownloadTests
     public void DownloadMapFromFile_Returns_Correct_Blinky_Coordinate_Within_The_Map(string filePath, Coordinate expectedBlinkyCoordinate)
     {
         
-        var actualBlinkyCoordinate = GameDownload.DownloadMapFromFile(filePath).BlinkyLocation;
+        var actualBlinkyCoordinate = GameDownload.DownloadMapFromFile(filePath).BlinkyCoordinate;
         
         Assert.Equal(expectedBlinkyCoordinate, actualBlinkyCoordinate);
     }

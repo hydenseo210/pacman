@@ -1,6 +1,6 @@
 namespace Pacman.Tests;
 
-public static class GhostControllerBlinkyTestGrid1
+public static class GhostControllerBlinkyTestGrid4
 {
     public static readonly Dictionary<Coordinate, Cell> actualGrid = new ()
     {
@@ -30,7 +30,7 @@ public static class GhostControllerBlinkyTestGrid1
         [new Coordinate(1,10)] = new WallVertical(),
         
         [new Coordinate(2,0)] = new WallVertical(),
-        [new Coordinate(2,1)] = new ThePacman(),
+        [new Coordinate(2,1)] = new Food(),
         [new Coordinate(2,2)] = new Food(),
         [new Coordinate(2,3)] = new Food(),
         [new Coordinate(2,4)] = new Food(),
@@ -38,7 +38,7 @@ public static class GhostControllerBlinkyTestGrid1
         [new Coordinate(2,6)] = new Food(),
         [new Coordinate(2,7)] = new Food(),
         [new Coordinate(2,8)] = new Food(),
-        [new Coordinate(2,9)] = new Food(),
+        [new Coordinate(2,9)] = new ThePacman(),
         [new Coordinate(2,10)] = new WallVertical(),
         
         [new Coordinate(3,0)] = new WallVertical(),
@@ -68,7 +68,7 @@ public static class GhostControllerBlinkyTestGrid1
         
         // ║∘∘∘∘∘∘∘∘║
         // ║∘∘∘∘∘∘∘∘║
-        // ║<∘∘∘ß∘∘∘║
+        // ║∘∘∘∘ß∘∘<║
         // ║∘∘∘∘∘∘∘∘║
         // ║∘∘∘∘∘∘∘∘║
     };
@@ -100,15 +100,15 @@ public static class GhostControllerBlinkyTestGrid1
         [new Coordinate(1,10)] = new WallVertical(),
         
         [new Coordinate(2,0)] = new WallVertical(),
-        [new Coordinate(2,1)] = new ThePacman(),
+        [new Coordinate(2,1)] = new Food(),
         [new Coordinate(2,2)] = new Food(),
         [new Coordinate(2,3)] = new Food(),
-        [new Coordinate(2,4)] = new Blinky(new AggressiveBehaviour()),
+        [new Coordinate(2,4)] = new Food(),
         [new Coordinate(2,5)] = new EmptyCell(),
-        [new Coordinate(2,6)] = new Food(),
+        [new Coordinate(2,6)] = new Blinky(new AggressiveBehaviour()),
         [new Coordinate(2,7)] = new Food(),
         [new Coordinate(2,8)] = new Food(),
-        [new Coordinate(2,9)] = new Food(),
+        [new Coordinate(2,9)] = new ThePacman(),
         [new Coordinate(2,10)] = new WallVertical(),
         
         [new Coordinate(3,0)] = new WallVertical(),
@@ -138,15 +138,15 @@ public static class GhostControllerBlinkyTestGrid1
         
         // ║∘∘∘∘∘∘∘∘║
         // ║∘∘∘∘∘∘∘∘║
-        // ║<∘∘ß ∘∘∘║
+        // ║∘∘∘∘ ß∘<║
         // ║∘∘∘∘∘∘∘∘║
         // ║∘∘∘∘∘∘∘∘║
     };
     
-    public static readonly Coordinate ActualPacmanCoordinate = new (2, 1);
+    public static readonly Coordinate ActualPacmanCoordinate = new (2, 9);
     public static readonly Coordinate ActualBlinkyCoordinate = new (2, 5);
-    public static readonly Coordinate ExpectedPacmanCoordinate = new (2, 1);
-    public static readonly Coordinate ExpectedBlinkyCoordinate = new (2, 4);
+    public static readonly Coordinate ExpectedPacmanCoordinate = new (2, 9);
+    public static readonly Coordinate ExpectedBlinkyCoordinate = new (2, 6);
     
     
 }

@@ -2,5 +2,5 @@ namespace Pacman.Code;
 
 public interface IChaseBehaviour
 {
-    List<Coordinate> Chase(GameState gameState, Coordinate pacmanLocation);
+    List<Coordinate> Chase(IMap map, Coordinate ghostCoordinate);
 }

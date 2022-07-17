@@ -4,63 +4,63 @@ public class GhostController
 {
     public Cell BlinkyTrail { get; set; } = new EmptyCell();
     public Cell PinkyTrail { get; set; } = new EmptyCell();
-    private Blinky _blinky;
-    private Pinky _pinky;
+    private IGhost _blinky;
+    private IGhost _pinky;
 
-    public GhostController(Blinky blinky, Pinky pinky)
+    public GhostController(IGhost blinky, IGhost pinky)
     {
         _blinky = blinky;
         _pinky = pinky;
     }
 
-    public void MoveBlinky(GameState gameState)
+    public void MoveBlinky(IMap map)
     {
-        _blinky.CreateMoveList(gameState);
+        _blinky.CreateMoveList(map);
         _blinky.RemoveLast();
-        var departure = gameState.BlinkyLocation;
+        var departure = map.BlinkyCoordinate;
         var destination = _blinky.Move();
         
         
-        if(gameState.Map[destination] is ThePacman)
+        if(map.Grid[destination] is ThePacman)
         {
-            gameState.IsCollisionWithGhost = true;
+            map.IsCollisionWithGhost = true;
             BlinkyTrail = new EmptyCell();
             PinkyTrail = new EmptyCell();
             return;
         }
 
         var previousTrail = BlinkyTrail;
-        BlinkyTrail = gameState.Map[destination];
-        gameState.Map[destination] = gameState.Map[departure];
-        gameState.Map[departure] = previousTrail;
-        gameState.BlinkyLocation = destination;
+        BlinkyTrail = map.Grid[destination];
+        map.Grid[destination] = map.Grid[departure];
+        map.Grid[departure] = previousTrail;
+        map.BlinkyCoordinate = destination;
     }
     
-    public void MovePinky(GameState gameState)
+    public void MovePinky(IMap map)
     {
-        _pinky.CreateMoveList(gameState);
+        _pinky.CreateMoveList(map);
         _pinky.RemoveLast();
-        var departure = gameState.PinkyLocation;
+        var departure = map.PinkyCoordinate;
         var destination = _pinky.Move();
 
-        if(gameState.Map[destination] is ThePacman)
+        if(map.Grid[destination] is ThePacman)
         {
-            gameState.IsCollisionWithGhost = true;
+            map.IsCollisionWithGhost = true;
             BlinkyTrail = new EmptyCell();
             PinkyTrail = new EmptyCell();
             return;
         }
         var previousTrail = PinkyTrail;
-        PinkyTrail = gameState.Map[destination];
-        gameState.Map[destination] = gameState.Map[departure];
-        gameState.Map[departure] = previousTrail;
-        gameState.PinkyLocation = destination;
+        PinkyTrail = map.Grid[destination];
+        map.Grid[destination] = map.Grid[departure];
+        map.Grid[departure] = previousTrail;
+        map.PinkyCoordinate = destination;
     }
 
-    public void Reset(GameState gameState)
+    public void Reset(IMap map)
     {
-        _blinky.CreateMoveList(gameState);
-        _pinky.CreateMoveList(gameState);
+        _blinky.CreateMoveList(map);
+        _pinky.CreateMoveList(map);
     }
 
     public void ChangeGhostsToFrightened()

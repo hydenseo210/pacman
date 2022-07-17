@@ -2,9 +2,9 @@ namespace Pacman.Code;
 
 public class ScatterBehaviour : IChaseBehaviour
 {
-    public List<Coordinate> Chase(GameState gameState, Coordinate ghostLocation)
+    public List<Coordinate> Chase(IMap map, Coordinate ghostCoordinate)
     {
         var algorithm = new AStarSearchAlgorithm();
-        return algorithm.Execute(gameState, ghostLocation, this);
+        return algorithm.Execute(map, ghostCoordinate, this);
     }
 }

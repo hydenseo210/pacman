@@ -2,5 +2,5 @@ namespace Pacman.Code;
 
 public interface IFrightenedBehaviour
 {
-    Coordinate Fright(Coordinate ghostLocation, Coordinate pacmanLocation);
+    Coordinate Fright(IMap map, Coordinate pacmanCoordinate);
 }

@@ -33,11 +33,11 @@ public static class GameDownload
                         break;
                     case var value when value == Emojis.Blinky:
                         map.AddToMap(coordinate, new Blinky(new AggressiveBehaviour()));
-                        map.BlinkyLocation = coordinate;
+                        map.BlinkyCoordinate = coordinate;
                         break;
                     case var value when value == Emojis.Pinky:
                         map.AddToMap(coordinate, new Pinky(new AggressiveBehaviour()));
-                        map.PinkyLocation = coordinate;
+                        map.PinkyCoordinate = coordinate;
                         break;
                     case Emojis.EmptyString:
                         map.AddToMap(coordinate, new EmptyCell());
