@@ -8,19 +8,17 @@ namespace Pacman.Code
         private IMap _map;
         private readonly Queue<IMap> _nextMap;
         private readonly PacmanController _pacmanController;
-        private readonly GhostController _ghostController;
+        private readonly IGhostController _ghostController;
         private readonly IGameStatus _gameStatus;
-        private readonly Printer _printer;
         private readonly Coordinate _pacmanStartingLocation;
         private readonly Coordinate _blinkyStartingCoordinate;
         private readonly Coordinate _pinkyStartingCoordinate;
 
-        public Game(IGameStatus _gameStatus, IMap map, Queue<IMap> nextMap, 
-            PacmanController pacmanController, GhostController ghostController, Printer printer
+        public Game(IGameStatus gameStatus, IMap map, Queue<IMap> nextMap, 
+            PacmanController pacmanController, IGhostController ghostController
             )
         {
-            this._gameStatus = _gameStatus;
-            _printer = printer;
+            _gameStatus = gameStatus;
             _map = map;
             _nextMap = nextMap;
             _pacmanController = pacmanController;
@@ -30,11 +28,10 @@ namespace Pacman.Code
             _pinkyStartingCoordinate = _map.PinkyCoordinate;
 
         }
-        public bool IsWon() => _map.CurrentScore == _map.TotalScore;
-        public IMap GetMap() => _map;
+        public bool IsWon() => _gameStatus.CurrentScore == _map.TotalScore;
         public bool IsLastLevel() => _nextMap.Count == 0;
-        public bool IsGameOver() => _map.LivesList.Count == 0;
-        private void OpenGhostCage()
+        public bool IsGameOver() => _gameStatus.LivesList.Count == 0;
+        public void OpenGhostCage()
         {
             foreach (var ghostGate in _map.GhostGateCoordinates)
             {
@@ -45,27 +42,25 @@ namespace Pacman.Code
         public void MovePacman(Directions direction)
         {
             _pacmanController.Move(_map, direction);
-            _printer.PrintGameConsole();
             if (_map.IsCollisionWithGhost)
             {
-                _map.LivesList = _map.LivesList.GetRange(0, _map.LivesList.Count - 1);
+                _gameStatus.LivesList = _gameStatus.LivesList.GetRange(0, _gameStatus.LivesList.Count - 1);
                 ResetPosition();
                 _map.IsCollisionWithGhost = false;
             }
-            if (_map.GodMode)
+            if (_gameStatus.GodMode)
             {
                 _ghostController.ChangeGhostsToFrightened();
-                _map.GodMode = false;
+                _gameStatus.GodMode = false;
             }
             
         }
         public void MoveBlinky()
         {
             _ghostController.MoveBlinky(_map);
-            _printer.PrintGameConsole();
             if (_map.IsCollisionWithGhost)
             {
-                _map.LivesList = _map.LivesList.GetRange(0, _map.LivesList.Count - 1);
+                _gameStatus.LivesList = _gameStatus.LivesList.GetRange(0, _gameStatus.LivesList.Count - 1);
                 ResetPosition();
                 _map.IsCollisionWithGhost = false;
             }
@@ -73,16 +68,15 @@ namespace Pacman.Code
         public void MovePinky()
         {
             _ghostController.MovePinky(_map);
-            _printer.PrintGameConsole();
             if (_map.IsCollisionWithGhost)
             {
-                _map.LivesList = _map.LivesList.GetRange(0, _map.LivesList.Count - 1);
+                _gameStatus.LivesList = _gameStatus.LivesList.GetRange(0, _gameStatus.LivesList.Count - 1);
                 ResetPosition();
                 _map.IsCollisionWithGhost = false;
             }
         }
 
-        private void ResetPosition() // write life lost message - sleep 2000
+        private void ResetPosition()
         {
             _map.Grid[_map.PacmanCoordinate] = new EmptyCell();
             _map.PacmanCoordinate = _pacmanStartingLocation;
@@ -99,20 +93,8 @@ namespace Pacman.Code
             _ghostController.Reset(_map);
             
         }
-
-        private void UpdateGameState() {
+        public void UpdateGameState() {
             _map = _nextMap.Dequeue();
         }
-
-        public void NextLevel()
-        {
-            _printer.LevelOneCompleteMessage();
-            UpdateGameState();
-            _printer.PrintGameConsole();
-        }
-        
-
     }
-    
-    
 }

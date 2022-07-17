@@ -3,7 +3,7 @@ using Pastel;
 
 namespace Pacman.Code;
 
-public class Emojis
+public static class Emojis
 {
     
     public const string EmptyString = " ";
@@ -16,11 +16,7 @@ public class Emojis
     public const string SpecialFood = "+";
     public static readonly string Pinky = "þ";
     public static readonly string Blinky = "ß";
-    public static readonly List<string> EatingRightMotion = new List<string> { "⩹", "<", "⦣", "<"};
-    public static readonly List<string> EatingLeftMotion = new List<string> { "⩺", ">", "⦢", ">"};
-    public static readonly List<string> EatingUpMotion = new List<string> { "⩒", "⋁", "⩗", "⋁"};
-    public static readonly List<string> EatingDownMotion = new List<string> { "⟑", "⋀", "⩘", "⋀"};
-
+    public static readonly List<string> DefaultLivesList = new List<string> { Life, Life, Life, Life};
     public const string WallUpLeft = "╔";
     public const string WallUpRight = "╗";
     public const string WallDownLeft = "╚";

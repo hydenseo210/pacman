@@ -1,6 +1,6 @@
 namespace Pacman.Code;
 
-public class GhostController
+public class GhostController : IGhostController
 {
     public Cell BlinkyTrail { get; set; } = new EmptyCell();
     public Cell PinkyTrail { get; set; } = new EmptyCell();
