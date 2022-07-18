@@ -1,5 +1,3 @@
-using System.Reflection.PortableExecutable;
-
 namespace Pacman.Code
 {
     public class PacmanController
@@ -19,7 +17,8 @@ namespace Pacman.Code
             {
                 var destination = Abs(pacman.MoveForward(departure),map);
                 if (map.Grid[destination] is Wall) return;
-                if (map.Grid[destination] is SpecialFood) gameStatus.GodMode = true;
+                if (map.Grid[destination] is SpecialFood) gameStatus.GodMode = !gameStatus.GodMode;
+                if (map.Grid[destination] is FreezeFood) gameStatus.FreezeMode = !gameStatus.FreezeMode;
                 if (map.Grid[destination] is EmptyCell) pacman.State.Eating = false;
                 if (map.Grid[destination] is Food)
                 {

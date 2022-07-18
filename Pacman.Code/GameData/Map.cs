@@ -8,8 +8,7 @@ public class Map : IMap
     public Dictionary<Coordinate, Cell> Grid { get; set; }
     public List<Coordinate> GhostGateCoordinates { get; set; }
     public Coordinate PacmanCoordinate { get; set; }
-    public Coordinate BlinkyCoordinate { get; set; }
-    public Coordinate PinkyCoordinate { get; set; }
+    public List<IGhost> GhostList { get; set; }
     public bool IsCollisionWithGhost { get; set; }
     public Map(int height,
         int width,
@@ -17,9 +16,7 @@ public class Map : IMap
         Dictionary<Coordinate, Cell> grid,
         List<Coordinate> ghostGateCoordinates,
         Coordinate pacmanLocation,
-        Coordinate blinkyLocation,
-        Coordinate pinkyLocation, 
-        bool isCollisionWithGhost = false)
+        List<IGhost> ghostList, bool isCollisionWithGhost = false)
     {
         Height = height;
         Width = width;
@@ -27,8 +24,7 @@ public class Map : IMap
         Grid = grid;
         GhostGateCoordinates = ghostGateCoordinates;
         PacmanCoordinate = pacmanLocation;
-        BlinkyCoordinate = blinkyLocation;
-        PinkyCoordinate = pinkyLocation;
+        GhostList = ghostList;
         IsCollisionWithGhost = isCollisionWithGhost;
     }
 

@@ -2,11 +2,8 @@ namespace Pacman.Code;
 
 public interface IGhostController
 {
-    public Cell BlinkyTrail { get; set; }
-    public Cell PinkyTrail { get; set; }
-    public void MoveBlinky(IMap map);
-    public void MovePinky(IMap map);
-    public void Reset(IMap map);
-    public void ChangeGhostsToFrightened();
-    
+    public void Move(IMap map, IGhost ghost);
+    public void Reset(IMap map, IGhost ghost);
+    public void ChangeGhostBehaviour(IGhost ghost);
+    public void SetGhostToFrozen(IGhost ghost);
 }

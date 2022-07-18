@@ -12,9 +12,9 @@ public class Ghost_BlinkyTests
         var Blinky = new Blinky(new AggressiveBehaviour());
         var actualMap = new Map(height, width, totalScore, grid, 
             Stub.ListOfCoordinates, pacmanCoordinate, blinkyCoordinate , Stub.Coordinate);
-        var controller = new GhostController(Blinky, Stub.AggressivePinky);
+        var controller = new GhostController();
         // Act 
-        controller.MoveBlinky(actualMap);
+        controller.Move(actualMap, Blinky);
     
         var actualGrid = actualMap.Grid;
         // Assert

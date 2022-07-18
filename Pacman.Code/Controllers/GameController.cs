@@ -26,11 +26,8 @@ namespace Pacman.Code
                 }
                 
                 printer.PrintGameConsole();
-                game.MovePacman(direction);
+                game.Tick(direction);
                 printer.PrintGameConsole();
-                game.MoveBlinky();
-                printer.PrintGameConsole();
-                game.MovePinky();
                 
                 threadSleeper.Sleep(200);
                 Console.Clear();

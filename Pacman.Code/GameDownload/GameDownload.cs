@@ -8,10 +8,10 @@ public static class GameDownload
         var fileData = File.ReadAllLines(filePath);
         
         if (fileData.Length == 0) throw new InvalidDataException("File is Empty.");
-
+        
         var map = new Map(fileData.Length, fileData.First().Length, 0,
             new Dictionary<Coordinate, Cell>(), new List<Coordinate>(),
-            defaultCoordinate, defaultCoordinate, defaultCoordinate);
+            defaultCoordinate, new List<IGhost>());
         // {
         //     Height = fileData.Length,
         //     Width = fileData.First().Length
@@ -32,12 +32,32 @@ public static class GameDownload
                         map.PacmanCoordinate = coordinate;
                         break;
                     case var value when value == Constants.Blinky:
-                        map.AddToMap(coordinate, new Blinky(new AggressiveBehaviour()));
-                        map.BlinkyCoordinate = coordinate;
+                        var Blinky = new Blinky(new AggressiveBehaviour());
+                        map.AddToMap(coordinate, Blinky);
+                        Blinky.CurrentCoordinate = coordinate;
+                        Blinky.StartingCoordinate = coordinate;
+                        map.GhostList.Add(Blinky);
                         break;
                     case var value when value == Constants.Pinky:
-                        map.AddToMap(coordinate, new Pinky(new AggressiveBehaviour()));
-                        map.PinkyCoordinate = coordinate;
+                        var Pinky = new Pinky(new AggressiveBehaviour());
+                        map.AddToMap(coordinate, Pinky);
+                        Pinky.CurrentCoordinate = coordinate;
+                        Pinky.StartingCoordinate = coordinate;
+                        map.GhostList.Add(Pinky);
+                        break;
+                    case var value when value == Constants.Clyde:
+                        var Clyde = new Clyde(new FrightenedBehaviour());
+                        map.AddToMap(coordinate, Clyde);
+                        Clyde.CurrentCoordinate = coordinate;
+                        Clyde.StartingCoordinate = coordinate;
+                        map.GhostList.Add(Clyde);
+                        break;
+                    case var value when value == Constants.Inky:
+                        var Inky = new Inky(new FrightenedBehaviour());
+                        map.AddToMap(coordinate, Inky);
+                        Inky.CurrentCoordinate = coordinate;
+                        Inky.StartingCoordinate = coordinate;
+                        map.GhostList.Add(Inky);
                         break;
                     case Constants.EmptyString:
                         map.AddToMap(coordinate, new EmptyCell());
@@ -48,6 +68,9 @@ public static class GameDownload
                         break;
                     case Constants.SpecialFood:
                         map.AddToMap(coordinate, new SpecialFood());
+                        break;
+                    case Constants.PoisonFood:
+                        map.AddToMap(coordinate, new FreezeFood());
                         break;
                     case Constants.WallUpLeft:
                         map.AddToMap(coordinate, new WallUpLeft());

@@ -1,6 +1,3 @@
-using System.Text;
-using Figgle;
-
 namespace Pacman.Code
 {
     public class Game
@@ -11,8 +8,6 @@ namespace Pacman.Code
         private readonly IGhostController _ghostController;
         private readonly IGameStatus _gameStatus;
         private readonly Coordinate _pacmanStartingLocation;
-        private readonly Coordinate _blinkyStartingCoordinate;
-        private readonly Coordinate _pinkyStartingCoordinate;
 
         public Game(IGameStatus gameStatus, IMap map, Queue<IMap> nextMap, 
             PacmanController pacmanController, IGhostController ghostController
@@ -24,8 +19,6 @@ namespace Pacman.Code
             _pacmanController = pacmanController;
             _ghostController = ghostController;
             _pacmanStartingLocation = _map.PacmanCoordinate;
-            _blinkyStartingCoordinate = _map.BlinkyCoordinate;
-            _pinkyStartingCoordinate = _map.PinkyCoordinate;
 
         }
         public bool IsWon() => _gameStatus.CurrentScore == _map.TotalScore;
@@ -38,8 +31,27 @@ namespace Pacman.Code
                 _map.Grid[ghostGate] = new EmptyCell();
             }
         }
-        
-        public void MovePacman(Directions direction)
+
+        private void ApplyFoodSpecialEffects()
+        {
+            if (_gameStatus.GodMode)
+            {
+                foreach (var ghost in _map.GhostList)
+                {
+                    _ghostController.ChangeGhostBehaviour(ghost);
+                }
+                _gameStatus.GodMode = false;
+            }
+
+            if (_gameStatus.FreezeMode)
+            {
+                foreach (var ghost in _map.GhostList)
+                {
+                    _ghostController.SetGhostToFrozen(ghost);
+                }
+            }
+        }
+        private void MovePacman(Directions direction)
         {
             _pacmanController.Move(_gameStatus,_map, direction);
             if (_map.IsCollisionWithGhost)
@@ -48,31 +60,24 @@ namespace Pacman.Code
                 ResetPosition();
                 _map.IsCollisionWithGhost = false;
             }
-            if (_gameStatus.GodMode)
-            {
-                _ghostController.ChangeGhostsToFrightened();
-                _gameStatus.GodMode = false;
-            }
             
         }
-        public void MoveBlinky()
+        private void MoveGhost(IGhost ghost)
         {
-            _ghostController.MoveBlinky(_map);
-            if (_map.IsCollisionWithGhost)
-            {
-                _gameStatus.LivesList = _gameStatus.LivesList.GetRange(0, _gameStatus.LivesList.Count - 1);
-                ResetPosition();
-                _map.IsCollisionWithGhost = false;
-            }
+            _ghostController.Move(_map, ghost);
+            if (!_map.IsCollisionWithGhost) return;
+            _gameStatus.LivesList = _gameStatus.LivesList.GetRange(0, _gameStatus.LivesList.Count - 1);
+            ResetPosition();
+            _map.IsCollisionWithGhost = false;
         }
-        public void MovePinky()
+
+        public void Tick(Directions direction)
         {
-            _ghostController.MovePinky(_map);
-            if (_map.IsCollisionWithGhost)
+            ApplyFoodSpecialEffects();
+            MovePacman(direction);
+            foreach (var ghost in _map.GhostList)
             {
-                _gameStatus.LivesList = _gameStatus.LivesList.GetRange(0, _gameStatus.LivesList.Count - 1);
-                ResetPosition();
-                _map.IsCollisionWithGhost = false;
+                MoveGhost(ghost);
             }
         }
 
@@ -82,16 +87,15 @@ namespace Pacman.Code
             _map.PacmanCoordinate = _pacmanStartingLocation;
             _map.Grid[_pacmanStartingLocation] = new ThePacman();
 
-            _map.Grid[_map.BlinkyCoordinate] = _ghostController.BlinkyTrail;
-            _map.BlinkyCoordinate = _blinkyStartingCoordinate;
-            _map.Grid[_blinkyStartingCoordinate] = new Blinky(new AggressiveBehaviour());
-
-            _map.Grid[_map.PinkyCoordinate] = _ghostController.PinkyTrail;
-            _map.PinkyCoordinate = _pinkyStartingCoordinate;
-            _map.Grid[_pinkyStartingCoordinate] = new Pinky(new AggressiveBehaviour());
-
-            _ghostController.Reset(_map);
-            
+            foreach (var ghost in _map.GhostList)
+            {
+                _map.Grid[ghost.CurrentCoordinate] = ghost.Trail;
+                ghost.Trail = new EmptyCell();
+                ghost.CurrentCoordinate = ghost.StartingCoordinate;
+                _map.Grid[ghost.StartingCoordinate] = (Cell)ghost;
+                _ghostController.ChangeGhostBehaviour(ghost);
+                _ghostController.Reset(_map, ghost);
+            }
         }
         public void UpdateGameState() {
             _map = _nextMap.Dequeue();
