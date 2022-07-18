@@ -1,5 +1,5 @@
 namespace Pacman.Tests;
-public class BlinkyTests
+public class Ghost_BlinkyTests
 {
     
     [Theory]
@@ -65,4 +65,5 @@ public class BlinkyTests
                 GhostControllerBlinkyTestGrid4.expectedGrid
             }
         };
+    
 }

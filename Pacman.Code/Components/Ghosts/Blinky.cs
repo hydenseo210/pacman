@@ -16,8 +16,8 @@ namespace Pacman.Code
         public override bool IsValidPath() => false;
         public override string Print()
         {
-            if (_chaseBehaviour is AggressiveBehaviour) return Emojis.Blinky.Pastel(Color.FromArgb(255, 0, 0));
-            return Emojis.Blinky.Pastel(Color.FromArgb(148, 0, 211));
+            if (_chaseBehaviour is AggressiveBehaviour) return Constants.Blinky.Pastel(Color.FromArgb(255, 0, 0));
+            return Constants.Blinky.Pastel(Color.FromArgb(148, 0, 211));
         }
         public void CreateMoveList(IMap map) =>
             _moveList = _chaseBehaviour.Chase(map, map.BlinkyCoordinate);

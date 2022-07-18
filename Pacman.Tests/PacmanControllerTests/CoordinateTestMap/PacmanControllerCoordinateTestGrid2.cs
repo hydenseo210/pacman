@@ -1,6 +1,6 @@
 namespace Pacman.Tests;
 
-public static class PacmanControllerMoveTestGrid2
+public static class PacmanControllerCoordinateTestGrid2
 {
     public static readonly Dictionary<Coordinate, Cell> actualGrid = new ()
     {

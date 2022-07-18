@@ -41,7 +41,7 @@ namespace Pacman.Code
         
         public void MovePacman(Directions direction)
         {
-            _pacmanController.Move(_map, direction);
+            _pacmanController.Move(_gameStatus,_map, direction);
             if (_map.IsCollisionWithGhost)
             {
                 _gameStatus.LivesList = _gameStatus.LivesList.GetRange(0, _gameStatus.LivesList.Count - 1);

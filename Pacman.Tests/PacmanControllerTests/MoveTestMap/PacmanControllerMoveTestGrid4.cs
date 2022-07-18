@@ -33,6 +33,6 @@ public static class PacmanControllerMoveTestGrid4
     };
     
     public static readonly Coordinate ActualPacmanCoordinate = new (1, 0);
-    public static readonly Coordinate ExpectedPacmanCoordinateForGridTwo = new (2, 0);
+    public static readonly Coordinate ExpectedPacmanCoordinate = new (2, 0);
    
 }

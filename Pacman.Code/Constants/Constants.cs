@@ -3,9 +3,8 @@ using Pastel;
 
 namespace Pacman.Code;
 
-public static class Emojis
+public static class Constants
 {
-    
     public const string EmptyString = " ";
     public const string Life = "💙";
     public static readonly string PacmanRight = "<";
@@ -14,8 +13,11 @@ public static class Emojis
     public const string PacmanDown = "⋀";
     public const string Food = "∘";
     public const string SpecialFood = "+";
+    public const string PoisonFood = "ø";
     public static readonly string Pinky = "þ";
     public static readonly string Blinky = "ß";
+    public static readonly string Clyde = "ç";
+    public static readonly string Inky = "Ï";
     public static readonly List<string> DefaultLivesList = new List<string> { Life, Life, Life, Life};
     public const string WallUpLeft = "╔";
     public const string WallUpRight = "╗";

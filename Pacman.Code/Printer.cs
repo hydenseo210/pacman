@@ -25,11 +25,11 @@ public class Printer : IPrinter
         {
             foreach (var message in Messages.StartMessage)
             {
-                PrintGrid();
+                PrintGameConsole();
                 _console.Write(message);
                 _thread.Sleep(2000);
             }
-            PrintGrid();
+            PrintGameConsole();
         }
     public void PrintGrid()
     {
@@ -44,7 +44,7 @@ public class Printer : IPrinter
                 row += cell;
             }
             _console.Write(row);
-            _console.Write("\n");
+            _console.Write(Messages.NewLine);
         }
     }
 
@@ -53,6 +53,7 @@ public class Printer : IPrinter
         PacmanMessage();
         PrintGrid();
         DashBoard();
+        _console.Write(Messages.NewLine);
     }
         
         

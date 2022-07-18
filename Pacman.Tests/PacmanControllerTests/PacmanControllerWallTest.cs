@@ -6,24 +6,25 @@ public class PacmanControllerWallTest
 {
 
     [Theory]
-    [MemberData(nameof(MovementData))]
+    [MemberData(nameof(WallData))]
     public void Grid_Should_NOT_Update_And_Pacman_Should_Not_Move_When_Hitting_A_Wall_When_Move_Is_Called(
         Directions direction, int height, int width, int totalScore, 
         Dictionary<Coordinate,Cell> grid, Coordinate coordinate,  Dictionary<Coordinate,Cell> expectedGrid)
     {
         // Arrange
+        var mockGameStatus = new Mock<IGameStatus>();
         var actualMap = new Map(height, width, totalScore, grid, 
             Stub.ListOfCoordinates, coordinate, Stub.Coordinate , Stub.Coordinate);
         var controller = new PacmanController();
         // Act 
-        controller.Move(actualMap, direction);
+        controller.Move(mockGameStatus.Object, actualMap, direction);
         
         var actualGrid = actualMap.Grid;
         // Assert
         Assert.True(Compare.Dictionaries(expectedGrid, actualGrid));
     }
     
-    public static IEnumerable<object[]> MovementData =>
+    public static IEnumerable<object[]> WallData =>
         new List<object[]>
         {
             new object[] { Directions.Right, 

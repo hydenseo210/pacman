@@ -1,5 +1,5 @@
 namespace Pacman.Tests;
-public class PinkyTests
+public class Ghost_PinkyTests
 {
     
     [Theory]
@@ -18,8 +18,7 @@ public class PinkyTests
     
         var actualGrid = actualMap.Grid;
         // Assert
-        var bl = Compare.Dictionaries(expectedGrid, actualGrid);
-        Assert.True(bl);
+        Assert.True(Compare.Dictionaries(expectedGrid, actualGrid));
     }
     
     public static IEnumerable<object[]> GhostData =>

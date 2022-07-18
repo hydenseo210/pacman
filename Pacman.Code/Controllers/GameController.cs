@@ -2,7 +2,7 @@ namespace Pacman.Code
 {
     public static class GameController
     {
-        public static void Run(Game game, IConsoleWrapper console, IThreadSleeper threadSleeper, Printer printer)
+        public static void Run(Game game, IConsoleWrapper console, IThreadSleeper threadSleeper, IPrinter printer)
         {
             printer.StartMessage();
             game.OpenGhostCage();
@@ -13,15 +13,23 @@ namespace Pacman.Code
                 if (IsGameFinished(game, printer)) break;
                 if (console.KeyAvailable)
                 {
-                    key = console.ReadKey().Key;
-                    direction = GetDirectionByKey(key);
+                    try
+                    {
+                        key = console.ReadKey().Key;
+                        direction = GetDirectionByKey(key);
+                    }
+                    catch (Exception e)
+                    {
+                        console.Write(e.Message);
+                        continue;
+                    }
                 }
                 
-                printer.PrintGrid();
+                printer.PrintGameConsole();
                 game.MovePacman(direction);
-                printer.PrintGrid();
+                printer.PrintGameConsole();
                 game.MoveBlinky();
-                printer.PrintGrid();
+                printer.PrintGameConsole();
                 game.MovePinky();
                 
                 threadSleeper.Sleep(200);
@@ -29,7 +37,7 @@ namespace Pacman.Code
             } while (key != ConsoleKey.Q);
         }
         
-        private static bool IsGameFinished(Game game, Printer printer)
+        private static bool IsGameFinished(Game game, IPrinter printer)
         {
             if (game.IsWon() && game.IsLastLevel())
             {
@@ -54,6 +62,7 @@ namespace Pacman.Code
 
             return false;
         }
+        
 
         private static Directions GetDirectionByKey(ConsoleKey key) =>
             key switch

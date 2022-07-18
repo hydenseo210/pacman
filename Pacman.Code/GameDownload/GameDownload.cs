@@ -27,72 +27,72 @@ public static class GameDownload
                 var currentString = fileData[x][y].ToString();
                 switch (currentString)
                 {
-                    case var value when value == Emojis.PacmanRight:
+                    case var value when value == Constants.PacmanRight:
                         map.AddToMap(coordinate, new ThePacman());
                         map.PacmanCoordinate = coordinate;
                         break;
-                    case var value when value == Emojis.Blinky:
+                    case var value when value == Constants.Blinky:
                         map.AddToMap(coordinate, new Blinky(new AggressiveBehaviour()));
                         map.BlinkyCoordinate = coordinate;
                         break;
-                    case var value when value == Emojis.Pinky:
+                    case var value when value == Constants.Pinky:
                         map.AddToMap(coordinate, new Pinky(new AggressiveBehaviour()));
                         map.PinkyCoordinate = coordinate;
                         break;
-                    case Emojis.EmptyString:
+                    case Constants.EmptyString:
                         map.AddToMap(coordinate, new EmptyCell());
                         break;
-                    case Emojis.Food:
+                    case Constants.Food:
                         map.AddToMap(coordinate, new Food());
                         map.TotalScore++;
                         break;
-                    case Emojis.SpecialFood:
+                    case Constants.SpecialFood:
                         map.AddToMap(coordinate, new SpecialFood());
                         break;
-                    case Emojis.WallUpLeft:
+                    case Constants.WallUpLeft:
                         map.AddToMap(coordinate, new WallUpLeft());
                         break;
-                    case Emojis.WallUpRight:
+                    case Constants.WallUpRight:
                         map.AddToMap(coordinate, new WallUpRight());
                         break;
-                    case Emojis.WallDownLeft:
+                    case Constants.WallDownLeft:
                         map.AddToMap(coordinate, new WallDownLeft());
                         break;
-                    case Emojis.WallDownRight:
+                    case Constants.WallDownRight:
                         map.AddToMap(coordinate, new WallDownRight());
                         break;
-                    case Emojis.WallHorizontal:
+                    case Constants.WallHorizontal:
                         map.AddToMap(coordinate, new WallHorizontal());
                         break;
-                    case Emojis.WallRightMiddle:
+                    case Constants.WallRightMiddle:
                         map.AddToMap(coordinate, new WallRightMiddle());
                         break;
-                    case Emojis.WallLeftMiddle:
+                    case Constants.WallLeftMiddle:
                         map.AddToMap(coordinate, new WallLeftMiddle());
                         break;
-                    case Emojis.WallUpMiddle:
+                    case Constants.WallUpMiddle:
                         map.AddToMap(coordinate, new WallUpMiddle());
                         break;
-                    case Emojis.WallDownMiddle:
+                    case Constants.WallDownMiddle:
                         map.AddToMap(coordinate, new WallDownMiddle());
                         break;
-                    case Emojis.WallDownMiddleThick:
+                    case Constants.WallDownMiddleThick:
                         map.AddToMap(coordinate, new WallDownMiddleThick());
                         break;
-                    case Emojis.WallVertical:
+                    case Constants.WallVertical:
                         map.AddToMap(coordinate, new WallVertical());
                         break;
-                    case Emojis.WallSmallMiddle:
+                    case Constants.WallSmallMiddle:
                         map.AddToMap(coordinate, new WallSmallMiddle());
                         break;
-                    case Emojis.WallCross:
+                    case Constants.WallCross:
                         map.AddToMap(coordinate, new WallCross());
                         break;
-                    case Emojis.GhostGate:
+                    case Constants.GhostGate:
                         map.AddToGhostGate(coordinate);
                         map.AddToMap(coordinate, new GhostGate());
                         break;
-                    case Emojis.Padding:
+                    case Constants.Padding:
                         map.AddToMap(coordinate, new Padding());
                         break;
                     

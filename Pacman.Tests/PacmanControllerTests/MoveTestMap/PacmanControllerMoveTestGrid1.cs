@@ -28,6 +28,6 @@ public static class PacmanControllerMoveTestGrid1
     };
     
     public static readonly Coordinate ActualPacmanCoordinate = new (0, 1);
-    public static readonly Coordinate ExpectedPacmanCoordinateForGridOne = new (0, 2);
+    public static readonly Coordinate ExpectedPacmanCoordinate = new (0, 2);
    
 }

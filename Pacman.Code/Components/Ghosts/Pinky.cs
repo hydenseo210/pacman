@@ -15,7 +15,7 @@ namespace Pacman.Code
         }
         public override bool IsValidPath() => false;
         public override string Print() => _chaseBehaviour is AggressiveBehaviour ? 
-            Emojis.Pinky.Pastel(Color.FromArgb(235, 95, 230)) : Emojis.Pinky.Pastel(Color.FromArgb(148,0,211));
+            Constants.Pinky.Pastel(Color.FromArgb(235, 95, 230)) : Constants.Pinky.Pastel(Color.FromArgb(148,0,211));
         public void CreateMoveList(IMap map) =>
             _moveList = _chaseBehaviour.Chase(map, map.PinkyCoordinate);
 

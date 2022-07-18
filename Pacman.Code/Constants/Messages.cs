@@ -1,7 +1,7 @@
 using Figgle;
 namespace Pacman.Code;
 
-public class Messages
+public static class Messages
 {
     public static readonly string Pacman = FiggleFonts.Standard.Render("Pacman");
     public static readonly string Ready = FiggleFonts.Standard.Render("Ready");
@@ -16,4 +16,5 @@ Score: {score} out of {totalScore}";
     public static string LifeLostMessage = FiggleFonts.Standard.Render("Life Lost");
     public static readonly string GameOverMessage = FiggleFonts.Standard.Render("GAME OVER!");
     public static readonly string WonMessage = FiggleFonts.Standard.Render("YOU WIN!");
+    public const string NewLine = "\n";
 }
