@@ -17,7 +17,7 @@ public class GameTests
         mockMap.Setup(x => x.Width).Returns(GameTestCollisionTestMap.Width);
         mockMap.Setup(x => x.Grid).Returns(GameTestCollisionTestGrid.actualGrid);
         mockMap.Setup(x => x.PacmanCoordinate).Returns(GameTestCollisionTestGrid.ActualPacmanCoordinate);
-        mockMap.Setup(x => x.IsCollisionWithGhost).Returns(true);
+        mockMap.SetupSequence(x => x.IsCollisionWithGhost).Returns(false).Returns(false).Returns(true);
         mockMap.Setup(x => x.GhostList).Returns(ghostList);
 
         var pacmanController = new PacmanController();
@@ -41,7 +41,11 @@ public class GameTests
         //Arrange
         var mockGameStatus = new Mock<IGameStatus>();
         mockGameStatus.Setup(x => x.LivesList).Returns(Stub.ListOfThreeLives);
-        var ghostList = new List<IGhost> { Dummy.blinky, Dummy.pinky };
+        var blinky = new Blinky(new AggressiveBehaviour());
+        var pinky = new Pinky(new AggressiveBehaviour());
+        blinky.CurrentCoordinate = blinkyCoordinate;
+        pinky.CurrentCoordinate = pinkyCoordinate;
+        var ghostList = new List<IGhost> { blinky, pinky };
         var actualMap = new Map(height, width, totalScore, grid, Stub.ListOfCoordinates, pacmanCoordinate, ghostList);
         var pacmanController = new PacmanController();
         var ghostController = new GhostController();
