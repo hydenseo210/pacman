@@ -1,6 +1,6 @@
 Level 1 of the Pacman game should look as follows.
 
-![](ScreenShots/level one screenshot.png)
+![](../../ScreenShots/level one screenshot.png)
 
 ## Entities
 ```js
