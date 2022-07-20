@@ -8,6 +8,7 @@ public interface IPrinter
     public void LevelOneCompleteMessage();
     public void DashBoard();
     public void StartMessage();
+    public void UpdateGame(IMap map, IGameStatus gameStatus);
     public void PrintGrid();
     public void PrintGameConsole();
 }

@@ -6,8 +6,8 @@ public static class Program
     {
          var currentMap = GameDownload.DownloadMapFromFile("../../../Assets/Maps/LevelOneMap.txt");
          var mapQueue = new Queue<IMap>();
-         var nextGameState = GameDownload.DownloadMapFromFile("../../../Assets/Maps/LevelTwoMap.txt");
-         mapQueue.Enqueue(nextGameState);
+         var nextMap = GameDownload.DownloadMapFromFile("../../../Assets/Maps/LevelTwoMap.txt");
+         mapQueue.Enqueue(nextMap);
          var console = new ConsoleWrapper();
          var gameStatus = new GameStatus();
          var thread = new ThreadSleeper();

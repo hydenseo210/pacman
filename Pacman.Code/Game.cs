@@ -6,7 +6,7 @@ namespace Pacman.Code
         private readonly Queue<IMap> _nextMap;
         private readonly PacmanController _pacmanController;
         private readonly IGhostController _ghostController;
-        private readonly IGameStatus _gameStatus;
+        private IGameStatus _gameStatus;
         private readonly Coordinate _pacmanStartingLocation;
 
         public Game(IGameStatus gameStatus, IMap map, Queue<IMap> nextMap, 
@@ -93,12 +93,13 @@ namespace Pacman.Code
                 ghost.Trail = new EmptyCell();
                 ghost.CurrentCoordinate = ghost.StartingCoordinate;
                 _map.Grid[ghost.StartingCoordinate] = (Cell)ghost;
-                _ghostController.ChangeGhostBehaviour(ghost);
                 _ghostController.Reset(_map, ghost);
             }
         }
-        public void UpdateGameState() {
+        public IMap UpdateGameState() {
             _map = _nextMap.Dequeue();
+            _gameStatus = new GameStatus();
+            return _map;
         }
     }
 }

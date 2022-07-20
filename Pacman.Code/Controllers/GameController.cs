@@ -28,7 +28,6 @@ namespace Pacman.Code
                 printer.PrintGameConsole();
                 game.Tick(direction);
                 printer.PrintGameConsole();
-                
                 threadSleeper.Sleep(200);
                 Console.Clear();
             } while (key != ConsoleKey.Q);
@@ -50,7 +49,8 @@ namespace Pacman.Code
             {
                 
                 printer.LevelOneCompleteMessage();
-                game.UpdateGameState();
+                var nextMap = game.UpdateGameState();
+                printer.UpdateGame(nextMap, new GameStatus());
                 printer.PrintGameConsole();
                 printer.StartMessage();
                 game.OpenGhostCage();

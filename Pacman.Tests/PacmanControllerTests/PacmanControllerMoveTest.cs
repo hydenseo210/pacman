@@ -13,7 +13,7 @@ public class PacmanControllerMoveTest
         // Arrange
         var mockGameStatus = new Mock<IGameStatus>();
         var actualMap = new Map(height, width, totalScore, grid, 
-            Stub.ListOfCoordinates, coordinate, Stub.Coordinate , Stub.Coordinate);
+            Stub.ListOfCoordinates, coordinate, Stub.GhostList);
         var controller = new PacmanController();
         // Act 
         controller.Move(mockGameStatus.Object, actualMap, direction);
@@ -31,7 +31,7 @@ public class PacmanControllerMoveTest
         // Arrange
         var mockGameStatus = new Mock<IGameStatus>();
         var actualMap = new Map(height, width, totalScore, grid, 
-            Stub.ListOfCoordinates, coordinate, Stub.Coordinate , Stub.Coordinate);
+            Stub.ListOfCoordinates, coordinate, Stub.GhostList);
         var controller = new PacmanController();
         // Act 
         controller.Move(mockGameStatus.Object, actualMap, direction);

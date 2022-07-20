@@ -4,43 +4,18 @@ public class GameDownloadTests
 {
 
     [Theory]
-    [InlineData(GameDownloadTestMap.EmptyTestMapFilePath, GameDownloadTestMap.EmptyExceptionMessage)]
-    public void GetMapFromFile_Throws_In(string filePath, string expectedExpection)
+    [InlineData(GameDownloadTestMap.EmptyTestMapFilePath, Exceptions.EmptyFile)]
+    [InlineData(GameDownloadTestMap.MultiplePacmanTestMapFilePath, Exceptions.PacmanCount)]
+    [InlineData(GameDownloadTestMap.MultipleBlinkyTestMapFilePath, Exceptions.GhostCount)]
+    [InlineData(GameDownloadTestMap.MultipleClydeTestMapFilePath, Exceptions.GhostCount)]
+    [InlineData(GameDownloadTestMap.MultiplePinkyTestMapFilePath, Exceptions.GhostCount)]
+    [InlineData(GameDownloadTestMap.MultipleInkyTestMapFilePath, Exceptions.GhostCount)]
+    public void GetMapFromFile_Throws_File_Is_Empty_Message_When_Given_Empty_File(string filePath, string expectedExpection)
     {
-        
         var ActualEmptyFileException = Assert.Throws<InvalidDataException>(() => GameDownload.DownloadMapFromFile(filePath));
         Assert.Equal(expectedExpection, ActualEmptyFileException.Message);
-        
     }
-    [Theory]
-    [InlineData(GameDownloadTestMap.TestMapOneFilePath, GameDownloadTestMap.TestMapOneHeight)]
-    public void DownloadMapFromFile_Returns_Correct_Map_Height(string filePath, int expectedHeight)
-    {
-        var actualMapHeight = GameDownload.DownloadMapFromFile(filePath).Height;
-        Assert.Equal(expectedHeight, actualMapHeight);
-    }
-    
-    
-    [Theory]
-    [InlineData(GameDownloadTestMap.TestMapOneFilePath, GameDownloadTestMap.TestMapOneWidth)]
-    public void DownloadMapFromFile_Returns_Correct_Map_Width(string filePath, int expectedWidth)
-    {
-        
-        var actualMapWidth = GameDownload.DownloadMapFromFile(filePath).Width;
-        
-        Assert.Equal(expectedWidth, actualMapWidth);
-    }
-    
-    [Theory]
-    [InlineData(GameDownloadTestMap.TestMapOneFilePath, GameDownloadTestMap.TestMapOneTotalScore)]
-    public void DownloadMapFromFile_Returns_Correct_Map_TotalScore(string filePath, int expectedTotalScore)
-    {
-        
-        var actualMapTotalScore = GameDownload.DownloadMapFromFile(filePath).TotalScore;
-        
-        Assert.Equal(expectedTotalScore, actualMapTotalScore);
-    }
-    
+
     [Theory]
     [MemberData(nameof(GridData))]
     public void DownloadMapFromFile_Returns_Correct_Map_Grid(string filePath, Dictionary<Coordinate,Cell> expectedMapGrid)
@@ -66,7 +41,8 @@ public class GameDownloadTests
     public void DownloadMapFromFile_Returns_Correct_Pinky_Coordinate_Within_The_Map(string filePath, Coordinate expectedPinkyCoordinate)
     {
         
-        var actualPinkyCoordinate = GameDownload.DownloadMapFromFile(filePath).PinkyCoordinate;
+        var pinky = GameDownload.DownloadMapFromFile(filePath).GhostList.Find(x => x is Pinky);
+        var actualPinkyCoordinate = pinky.StartingCoordinate;
         
         Assert.Equal(expectedPinkyCoordinate, actualPinkyCoordinate);
     }
@@ -76,7 +52,8 @@ public class GameDownloadTests
     public void DownloadMapFromFile_Returns_Correct_Blinky_Coordinate_Within_The_Map(string filePath, Coordinate expectedBlinkyCoordinate)
     {
         
-        var actualBlinkyCoordinate = GameDownload.DownloadMapFromFile(filePath).BlinkyCoordinate;
+        var blinky = GameDownload.DownloadMapFromFile(filePath).GhostList.Find(x => x is Blinky);
+        var actualBlinkyCoordinate = blinky.StartingCoordinate;
         
         Assert.Equal(expectedBlinkyCoordinate, actualBlinkyCoordinate);
     }

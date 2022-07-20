@@ -14,7 +14,7 @@ public class PacmanControllerScoreTest
         var actualGameStatus = new GameStatus();
         var expectedCurrentScore = actualGameStatus.CurrentScore + 1;
         var actualMap = new Map(height, width, totalScore, grid, 
-            Stub.ListOfCoordinates, coordinate, Stub.Coordinate , Stub.Coordinate);
+            Stub.ListOfCoordinates, coordinate, Stub.GhostList);
         var controller = new PacmanController();
         // Act 
         controller.Move(actualGameStatus, actualMap, direction);

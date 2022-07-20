@@ -41,7 +41,7 @@ namespace Pacman.Code
         public void SetToFrozen() => Frozen = !Frozen;
         public Coordinate Move()
         {
-            if (Frozen) return CurrentCoordinate;
+            //if (Frozen) return CurrentCoordinate;
             if (_moveList.Count == 0) return CurrentCoordinate;
             var move= _moveList.Last();
             RemoveLast();

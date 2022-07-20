@@ -2,8 +2,8 @@ namespace Pacman.Code;
 
 public class Printer : IPrinter
 {
-    private readonly IGameStatus _gameStatus;
-    private readonly IMap _map;
+    private IGameStatus _gameStatus;
+    private IMap _map;
     private readonly IConsoleWrapper _console;
     private readonly IThreadSleeper _thread;
 
@@ -14,7 +14,6 @@ public class Printer : IPrinter
         _console = console;
         this._thread = _thread;
     }
-    
     public void WonMessage() => _console.Write(Messages.WonMessage);
     public void PacmanMessage() => _console.Write(Messages.Pacman);
     public void GameOverMessage() => _console.Write(Messages.GameOverMessage);
@@ -31,6 +30,13 @@ public class Printer : IPrinter
             }
             PrintGameConsole();
         }
+
+    public void UpdateGame(IMap map, IGameStatus gameStatus)
+    {
+        _map = map;
+        _gameStatus = gameStatus;
+    }
+
     public void PrintGrid()
     {
         

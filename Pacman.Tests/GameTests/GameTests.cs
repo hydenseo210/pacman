@@ -12,21 +12,20 @@ public class GameTests
         var actualGameStatus = new GameStatus();
         var expectedLivesLeft = actualGameStatus.LivesList.Count - 1;
         var mockMap = new Mock<IMap>();
-        
+        var ghostList = new List<IGhost> { Dummy.blinky, Dummy.pinky };
         mockMap.Setup(x => x.Height).Returns(GameTestCollisionTestMap.Height);
         mockMap.Setup(x => x.Width).Returns(GameTestCollisionTestMap.Width);
         mockMap.Setup(x => x.Grid).Returns(GameTestCollisionTestGrid.actualGrid);
         mockMap.Setup(x => x.PacmanCoordinate).Returns(GameTestCollisionTestGrid.ActualPacmanCoordinate);
-        mockMap.Setup(x => x.BlinkyCoordinate).Returns(GameTestCollisionTestGrid.ActualBlinkyCoordinate);
-        mockMap.Setup(x => x.PinkyCoordinate).Returns(Stub.Coordinate);
         mockMap.Setup(x => x.IsCollisionWithGhost).Returns(true);
+        mockMap.Setup(x => x.GhostList).Returns(ghostList);
 
         var pacmanController = new PacmanController();
         var mockGhostController = new Mock<IGhostController>();
 
         //Act
         var game = new Game(actualGameStatus, mockMap.Object, Stub.QueueMap, pacmanController, mockGhostController.Object);
-        game.MovePacman(Directions.Right);
+        game.Tick(Directions.Right);
         var actualLivesLeft = actualGameStatus.LivesList.Count;
         // Assert
         Assert.Equal(expectedLivesLeft, actualLivesLeft);
@@ -42,19 +41,15 @@ public class GameTests
         //Arrange
         var mockGameStatus = new Mock<IGameStatus>();
         mockGameStatus.Setup(x => x.LivesList).Returns(Stub.ListOfThreeLives);
-
-        var actualMap = new Map(height, width, totalScore, grid, Stub.ListOfCoordinates, pacmanCoordinate, blinkyCoordinate, pinkyCoordinate);
+        var ghostList = new List<IGhost> { Dummy.blinky, Dummy.pinky };
+        var actualMap = new Map(height, width, totalScore, grid, Stub.ListOfCoordinates, pacmanCoordinate, ghostList);
         var pacmanController = new PacmanController();
-        var ghostController = new GhostController(Dummy.blinky, Dummy.pinky);
+        var ghostController = new GhostController();
         var game = new Game(mockGameStatus.Object, actualMap, Stub.QueueMap, pacmanController,
             ghostController);
         
         //Act
-        game.MovePacman(Directions.Right);
-        game.MoveBlinky();
-        actualMap.IsCollisionWithGhost = true;
-        game.MovePinky();
-        
+        game.Tick(Directions.Right);
         var actualGrid = actualMap.Grid;
         // Assert
         Assert.True(Compare.Dictionaries(expectedGrid, actualGrid));

@@ -6,17 +6,12 @@ public static class GameDownload
     {
         var defaultCoordinate = new Coordinate(0, 0);
         var fileData = File.ReadAllLines(filePath);
-        
-        if (fileData.Length == 0) throw new InvalidDataException("File is Empty.");
+        var pacmanCount = 0; var blinkyCount = 0; var pinkyCount = 0; var inkyCount = 0; var clydeCount = 0;
+        if (fileData.Length == 0) throw new InvalidDataException(Exceptions.EmptyFile);
         
         var map = new Map(fileData.Length, fileData.First().Length, 0,
             new Dictionary<Coordinate, Cell>(), new List<Coordinate>(),
             defaultCoordinate, new List<IGhost>());
-        // {
-        //     Height = fileData.Length,
-        //     Width = fileData.First().Length
-        //
-        // };
 
         for (var x = 0; x < map.Height; x++)
         {
@@ -28,43 +23,76 @@ public static class GameDownload
                 switch (currentString)
                 {
                     case var value when value == Constants.PacmanRight:
+                        if (pacmanCount > 0) throw new InvalidDataException(Exceptions.PacmanCount);
+                        map.AddToMap(coordinate, new ThePacman());
+                        map.PacmanCoordinate = coordinate;
+                        pacmanCount++;
+                        break;
+                    case Constants.PacmanLeft:
+                        if (pacmanCount > 0) throw new InvalidDataException(Exceptions.PacmanCount);
+                        map.AddToMap(coordinate, new ThePacman(Directions.Left));
+                        map.PacmanCoordinate = coordinate;
+                        pacmanCount++;
+                        break;
+                    case Constants.PacmanUp:
+                        if (pacmanCount > 0) throw new InvalidDataException(Exceptions.PacmanCount);
+                        map.AddToMap(coordinate, new ThePacman(Directions.Left));
+                        map.PacmanCoordinate = coordinate;
+                        pacmanCount++;
+                        break;
+                    case Constants.PacmanDown:
+                        if (pacmanCount > 0) throw new InvalidDataException(Exceptions.PacmanCount);
+                        map.AddToMap(coordinate, new ThePacman());
+                        map.PacmanCoordinate = coordinate;
+                        pacmanCount++;
+                        break;
+                    case var value when value == Constants.PacmanRight:
+                        if (pacmanCount > 0) throw new InvalidDataException(Exceptions.PacmanCount);
                         map.AddToMap(coordinate, new ThePacman());
                         map.PacmanCoordinate = coordinate;
                         break;
                     case var value when value == Constants.Blinky:
+                        if (blinkyCount > 0) throw new InvalidDataException(Exceptions.GhostCount);
                         var Blinky = new Blinky(new AggressiveBehaviour());
                         map.AddToMap(coordinate, Blinky);
                         Blinky.CurrentCoordinate = coordinate;
                         Blinky.StartingCoordinate = coordinate;
                         map.GhostList.Add(Blinky);
+                        blinkyCount++;
                         break;
                     case var value when value == Constants.Pinky:
+                        if (pinkyCount > 0) throw new InvalidDataException(Exceptions.GhostCount);
                         var Pinky = new Pinky(new AggressiveBehaviour());
                         map.AddToMap(coordinate, Pinky);
                         Pinky.CurrentCoordinate = coordinate;
                         Pinky.StartingCoordinate = coordinate;
                         map.GhostList.Add(Pinky);
+                        pinkyCount++;
                         break;
                     case var value when value == Constants.Clyde:
+                        if (clydeCount > 0) throw new InvalidDataException(Exceptions.GhostCount);
                         var Clyde = new Clyde(new FrightenedBehaviour());
                         map.AddToMap(coordinate, Clyde);
                         Clyde.CurrentCoordinate = coordinate;
                         Clyde.StartingCoordinate = coordinate;
                         map.GhostList.Add(Clyde);
+                        clydeCount++;
                         break;
                     case var value when value == Constants.Inky:
+                        if (inkyCount > 0) throw new InvalidDataException(Exceptions.GhostCount);
                         var Inky = new Inky(new FrightenedBehaviour());
                         map.AddToMap(coordinate, Inky);
                         Inky.CurrentCoordinate = coordinate;
                         Inky.StartingCoordinate = coordinate;
                         map.GhostList.Add(Inky);
+                        inkyCount++;
                         break;
                     case Constants.EmptyString:
                         map.AddToMap(coordinate, new EmptyCell());
                         break;
                     case Constants.Food:
                         map.AddToMap(coordinate, new Food());
-                        map.TotalScore++;
+                        map.TotalScore += 1;
                         break;
                     case Constants.SpecialFood:
                         map.AddToMap(coordinate, new SpecialFood());
