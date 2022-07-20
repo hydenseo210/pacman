@@ -53,11 +53,9 @@ dotnet test
 
 # Design Decisions
 
-## Requirements
+## Design Patterns
 1. [Map](Docs/Maps.md)
 2. [State pattern for pacman](Docs/StatePattern.md)
-3. [Strategy pattern for ghosts](Docs/StrategyPattern.md)
+3. [Strategy pattern for ghosts](Docs/MultipleGhosts.md)
 
-## Extensions
-1. [Multiple ghosts](Docs/MultipleGhosts.md)
 
