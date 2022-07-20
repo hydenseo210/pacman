@@ -1,2 +1,15 @@
-Level One map along with the dashboard and title.
-![](../../../../../var/folders/kx/mv_zl2l56jz5xlcccndlgk7m0000gq/T/TemporaryItems/NSIRD_screencaptureui_W3sxnO/Screen Shot 2022-07-20 at 2.20.09 pm.png)
+Level 1 of the Pacman game should look as follows.
+
+![](ScreenShots/level one screenshot.png)
+
+## Entities
+```js
+< Pacman
+∘ Food
++ Special Food
+ø Frozen Food
+þ Pinky Ghost
+ß Blinky Ghost
+ç Clyde Ghost
+Ï Inky Ghost
+```
