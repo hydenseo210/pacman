@@ -10,6 +10,8 @@ public class GameDownloadTests
     [InlineData(GameDownloadTestMap.MultipleClydeTestMapFilePath, Exceptions.GhostCount)]
     [InlineData(GameDownloadTestMap.MultiplePinkyTestMapFilePath, Exceptions.GhostCount)]
     [InlineData(GameDownloadTestMap.MultipleInkyTestMapFilePath, Exceptions.GhostCount)]
+    [InlineData(GameDownloadTestMap.ZeroPacmanTestMapFilePath, Exceptions.ZeroPacmanCount)]
+    [InlineData(GameDownloadTestMap.ZeroGhostTestMapFilePath, Exceptions.AtLeastOneGhost)]
     public void GetMapFromFile_Throws_File_Is_Empty_Message_When_Given_Empty_File(string filePath, string expectedExpection)
     {
         var ActualEmptyFileException = Assert.Throws<InvalidDataException>(() => GameDownload.DownloadMapFromFile(filePath));

@@ -150,7 +150,8 @@ public static class GameDownload
                 }
             }
         }
-
+        if (pacmanCount == 0 ) throw new InvalidDataException(Exceptions.ZeroPacmanCount);
+        if (blinkyCount == 0 && clydeCount == 0 && pinkyCount == 0 && inkyCount == 0) throw new InvalidDataException(Exceptions.AtLeastOneGhost);
         return map;
     }
 }
